@@ -4,6 +4,7 @@ from collections import defaultdict
 import numpy as np
 import datetime as dt
 import os
+import sys
 
 np.random.seed(dt.datetime.now().microsecond)
 
@@ -20,39 +21,31 @@ if __name__ == '__main__':
     df = pd.read_csv(args.meta)
     # df = df.head(100)
     # We Skip if genus information is missing
-    df = df[df['Genus'].notna()]
+    df = df[df['Genus'].notna() & df['Species'].notna()]
 
+    # print(df.shape)
+    # sys.exit(0)
     mp = defaultdict(list)
-
+    set_of_unique_species = set()
     for _, row in df.iterrows():
         # print(dict(row))
-        mp[row['Genus']].append(dict(row))
+        if row['Species'] not in set_of_unique_species:
+            mp[row['Genus']].append(dict(row))
+            set_of_unique_species.add(row['Species'])
 
     train, test = [], []
 
-    for key, val in mp.items():
-        seq_num = len(val)
-        if seq_num < 3:
-            continue
-        temp = val
-        np.random.shuffle(temp)
-        n = max(1, int(seq_num * 0.1))
-
-        test.extend(temp[0:n])
-        train.extend(temp[n:])
-
+    for _, val in mp.items():
+        if len(val) >= 3:
+            np.random.shuffle(val)
+            test.append(val[0])
+            train.extend(val[1:])
     # print(len(train), len(test))
+    print(f'No of train samples: {len(train)}')
+    print(f'No of test samples: {len(test)}')
+
     train_df = pd.DataFrame(train)
     test_df = pd.DataFrame(test)
-    print(train_df.shape)
-    print(test_df.shape)
 
-
-    # train_df.to_csv(os.path.join(args.out_dir, 'train.csv'), header=True, index=False)
-    # test_df.to_csv(os.path.join(args.out_dir, 'test.csv'), header=True, index=False)
-
-
-
-
-
-    # print(df.groupby(by=["Genus"])['Genus'].count())
+    train_df.to_csv(os.path.join(args.out_dir, 'train.csv'), header=True, index=False)
+    test_df.to_csv(os.path.join(args.out_dir, 'test.csv'), header=True, index=False)
