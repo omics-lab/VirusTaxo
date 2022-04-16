@@ -14,8 +14,8 @@ if __name__ == '__main__':
                         help='metadata file path')
     parser.add_argument('--seq', required=True,
                         help='Fasta sequence file path')
-    parser.add_argument('--model_file', required=True,
-                        help='path for saving model')
+    parser.add_argument('--model_dir', required=True,
+                        help='Dir path for saving model')
 
     args = parser.parse_args()
 
@@ -33,14 +33,8 @@ if __name__ == '__main__':
         for idx in range(len(seq) - params['k'] + 1):
             db[seq[idx:idx+params['k']]].add(genus)
 
-    dirname = os.path.dirname(args.model_file)
+    save_object(db, os.path.join(args.model_dir,  'model_k_' + str(params['k']) + '.pkl'))
 
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
-
-    save_object(db, args.model_file)
-
-    # print(db)
 
 
 

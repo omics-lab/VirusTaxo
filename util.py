@@ -8,6 +8,7 @@ def save_object(obj, filename):
 
 
 def entropy(x):
+    eps = 1e-11
     if len(x) == 1:
         return 0.0
 
@@ -19,7 +20,7 @@ def entropy(x):
     # print(summation)
     p = np.exp(x) / summation
     # print(p)
-    entropy = sum(p * np.log(p)) / np.log(len(p))
+    entropy = sum(p * np.log(p+eps)) / np.log(len(p))
     entropy *= -1
     return entropy
 

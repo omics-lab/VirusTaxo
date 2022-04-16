@@ -1,4 +1,4 @@
 params = {
-    'k': 17,
-    'discriminative': False
+    'k': 21,
+    'discriminative': True
 }

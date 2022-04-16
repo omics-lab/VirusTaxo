@@ -8,7 +8,6 @@ from tqdm import tqdm
 import os
 from util import save_object, entropy
 import pickle
-from Bio.Blast.Applications import NcbiblastnCommandline
 
 
 if __name__ == '__main__':
@@ -31,10 +30,12 @@ if __name__ == '__main__':
     with open(args.model_file, 'rb') as f:
         model = pickle.load(f)
 
-    for record in SeqIO.parse(args.seq, format='fasta'):
+    unclassified, classified = 0, 0
+
+    for record in tqdm(SeqIO.parse(args.seq, format='fasta')):
         if record.id not in accession_to_genus:
             continue
-        print(f'predicting for the id: {record.id}')
+        # print(f'predicting for the id: {record.id}')
         seq = str(record.seq)
         count = defaultdict(int)
 
@@ -55,21 +56,17 @@ if __name__ == '__main__':
         else:
             E = entropy(np.array([x for _, x in genus_score_tuple]))
 
-        # prediction = max(genus_score_tuple, key=lambda x: x[1])[0]
-        print(genus_score_tuple)
-        # print(E)
-        blastn_cline = NcbiblastnCommandline(query=record, db="./DB/virus_db", outfmt=6)
-        print(blastn_cline)
-        # stdout, stderr = blastn_cline()
+        if E > 0.5:
+            unclassified += 1
+        else:
+            prediction = max(genus_score_tuple, key=lambda x: x[1])[0]
+            if prediction == accession_to_genus[record.id]:
+                classified += 1
 
+    total = len(accession_to_genus)
+    # print(unclassified)
+    # print(classified)
+    # print("N\tUnclassified\tRemaining\tCorrectly_Classified\tAccuracy")
+    n = total - unclassified
+    print(f'{total}\t{unclassified}\t{n}\t{classified}\t{classified / n * 100}')
 
-        # print(f'{accession_to_genus[record.id]}\t{prediction}\t{E}')
-
-
-
-
-
-
-
-
-# https://ncbi.github.io/magicblast/cook/blastdb.html
