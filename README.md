@@ -8,6 +8,12 @@ source ./environment/bin/activate
 pip install -r requirements.txt
 ```
 
+### Validation
+
+```
+mkdir -p model/DNA
+bash cross_validate.sh
+```
 
 ### Train Test Split
 
@@ -17,9 +23,7 @@ python3 train_test_spiltter.py --meta ./Dataset/RNA/RNA_meta.csv \
 ```
 ### Build the DB
 ```
-python3 train.py --meta ./Dataset/RNA/train.csv \
-    --seq ./Dataset/RNA/RNA_seq.fasta \
-    --model_file ./model/RNA/model.pkl
+ python3 train.py --meta ./Dataset/RNA/train.csv --seq ./Dataset/RNA/RNA_seq.fasta --model_dir ./model/RNA
 ```
 
 ### Accuracy Find
