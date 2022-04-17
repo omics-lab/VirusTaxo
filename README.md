@@ -15,6 +15,19 @@ mkdir -p model/DNA
 bash cross_validate.sh
 ```
 
+### Final RNA or DNA
+```
+mkdir -p ./model/Final_RNA
+python3 select_data.py --meta ./Dataset/RNA/RNA_meta.csv --out_path ./Dataset/RNA/meta_fi.tsv
+python3 train.py --meta ./Dataset/RNA/meta_fi.tsv --seq ./Dataset/RNA/RNA_seq.fasta --model_dir ./model/Final_RNA
+```
+### Metagenomics
+
+```
+python3 benchmark.py --megahit_dir ./megahit --model_file ./model/Final_RNA/model_k_17.pkl
+```
+
+
 ### Train Test Split
 
 ```
