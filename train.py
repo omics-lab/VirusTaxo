@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     df = pd.read_csv(args.meta)
 
-    accession_to_genus = {row['Accession']: row['Genus'] for _, row in df.iterrows()}
+    accession_to_genus = {row['Id']: row['Genus'] for _, row in df.iterrows()}
 
     db = defaultdict(set)
 
