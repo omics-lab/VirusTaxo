@@ -33,6 +33,9 @@ if __name__ == '__main__':
         for idx in range(len(seq) - params['k'] + 1):
             db[seq[idx:idx+params['k']]].add(genus)
 
+    if not os.path.isdir(args.model_dir):
+        os.makedirs(args.model_dir)
+
     save_object(db, os.path.join(args.model_dir,  'model_k_' + str(params['k']) + '.pkl'))
 
 
