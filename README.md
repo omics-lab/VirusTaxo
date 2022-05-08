@@ -1,48 +1,97 @@
-### Installation
+### Requirements
+ - python >= 3.8
+ - Linux
 
+### Installation
+ - Cloning the repository
 ```
 git clone https://github.com/omics-lab/VirusTaxo_v1
+```
+ - Creation of Python Virtual Environment
+```
 cd VirusTaxo_v1
 python3 -m venv environment
 source ./environment/bin/activate
+```
+ - Installation of Python Packages
+```
 pip install -r requirements.txt
 ```
 
-### Validation
+### Build Custom Database
 
+- Preparing a metadata file in `csv` format. The metadata file must contain two columns named `Id`  and `Genus`. For example:
 ```
-mkdir -p model/DNA
-bash cross_validate.sh
-```
-
-### Final RNA or DNA
-```
-mkdir -p ./model/Final_RNA
-python3 select_data.py --meta ./Dataset/RNA/RNA_meta.csv --out_path ./Dataset/RNA/meta_fi.tsv
-python3 train.py --meta ./Dataset/RNA/meta_fi.tsv --seq ./Dataset/RNA/RNA_seq.fasta --model_dir ./model/Final_RNA
-```
-### Metagenomics
-
-```
-python3 benchmark.py --megahit_dir ./megahit --model_file ./model/Final_RNA/model_k_17.pkl
+Id,Genus
+NC_004205.1,Seadornavirus
+NC_038276.1,Ledantevirus
 ```
 
-
-### Train Test Split
-
-```
-python3 train_test_spiltter.py --meta ./Dataset/RNA/RNA_meta.csv \
-    --out_dir ./Dataset/RNA
-```
-### Build the DB
-```
- python3 train.py --meta ./Dataset/RNA/train.csv --seq ./Dataset/RNA/RNA_seq.fasta --model_dir ./model/RNA
-```
-
-### Accuracy Find
+- Preparing a sequence file in `fasta` format. For example:
 
 ```
-python3 acc_find.py --meta ./Dataset/RNA/test.csv \
-    --seq ./Dataset/RNA/RNA_seq.fasta \
-    --model_file ./model/RNA/model.pkl
+>NC_004205.1
+GTAGAAATTTGTAAAGATTAACAATGTCGAGTTTAAAGGAACATAGGACTAATAAAGCGAATTCAAGAAA
+CTTAATTCGTAGTCCAGATGAAGCTCCACCAACAGATAACAGTTTATTGAACAAAGGTGAAATATTAGCA
+CTTACTTTCAGTGATGAATACATCAAATCAAAACTATTACTTGGTCCGAAACTGCAAGGTTTACCTCCTC
+CATCACTTCCACCCAATTCGTACGGTTATCATTGCAATGGGTCGTTCGCCACCTATTTGCTAAGAGAATC
+>NC_038276.1
+CTTGAGAAACTTATTAGTCTATCAAGGTGGTTGTTTTTTCCCACATGAGTCAACAGACATCAAAATGTCT
+GATAGAGTTCCCTTCCGTGTTGCTACCAAGCAACCTGTTAAGCCCATTCTTCCACAAGAGGAGACCCCAG
+GACAATATCCAGCCGACTGGTTCAACACCCACAAAAATGAAAAGCCACGATTAGTCATTCCCTATAAAAT
+CAAAGATATGGATTCTCTGAGAGGTATTGTTCGTGAAGGAATAGAAAAGGACAGCCTGGATGTTAAGGTG
+```
+
+ **N.B.** The ID of the sequences must present in metadata file.
+
+
+ - DB Building cmd:
+```
+python3 build.py \
+   --meta ./Dataset/RNA_meta.csv \
+   --seq ./Dataset/RNA_seq.fasta \
+   --k 17 \
+   --saving_path ./model/RNA.pkl
+```
+
+ - Details of Parameters 
+  
+   - `meta`: Absolute or relative path of metadata file.
+   - `seq`: Absolute or relative path of fasta sequence file.
+   - `k` : It denotes the length of k-mer during database building.
+   - `saving_path`: The program will save a pickle file (A DB File) in the mentioned path.
+
+   
+### Predict from fasta file using Prebuilt DB
+
+Sample input.fasta
+
+```
+>k141_107617
+CCATTAGTACATTTCTGTGCATACAATATGATAGATCTGATCAAGATCATTATGCTCAAT
+ATCAATTAGTCAATCAAGTCATGTGTAATTATAACTACTCTTAATATTGCACTTGTACTC
+ATTGTCCTGACTGGCAACTAAAAACATACATCTGCTTCTTAGACTATGTATTTACATGTA
+CATGGTTGTGAATTGAATATGAAAGTGCTACAGTATCATAGTAACATGTACCATATTTAT
+CAGTGCAACTAAATTCTACATGAGATAGGGTAATATATTTATATTTGTTACATGTATTTT
+ACCTTGTAC
+>k141_21524
+CAGGTGCAGATACATATAGTCTAAGCTCCTCTTGATTAGCAATTACAGCAGCAGGAATAG
+CAGCATATACTAAAGCTAATTTAGCAAGTACATTACTAGCATTAACAGCTACAGGAGATG
+CGATATCAATTACATTAGCAGAATCAGCTACTAAAGATACTTTGTATCCATCACATAAAG
+CAAGAGCAGGAGTACCTGAATTGACATCACCTGACCAACGCAATTTCTCTACATTCTC
+```
+
+- Prediction cmd
+```
+ python3 predict.py \
+   --model_path ./model/RNA.pkl \
+   --seq ./input.fasta
+```
+
+- Sample Output
+
+```
+Id              Length  Genus           Entropy
+k141_107617     309     Unclassified    1.0
+k141_21524      238     Tobamovirus     0.0
 ```

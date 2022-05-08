@@ -2,22 +2,24 @@ import argparse
 import pandas as pd
 from Bio import SeqIO
 from collections import defaultdict
-from config import params
 from tqdm import tqdm
-import os
 from util import save_object
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--meta', required=True,
-                        help='metadata file path')
+                        help='File path of metadata')
     parser.add_argument('--seq', required=True,
                         help='Fasta sequence file path')
-    parser.add_argument('--model_dir', required=True,
-                        help='Dir path for saving model')
+    parser.add_argument('--k', required=True, type=int,
+                        help='Length of k-mer')
+    parser.add_argument('--saving_path', required=True,
+                        help='Absolute or relative path for saving model')
 
     args = parser.parse_args()
+
+    k = args.k
 
     df = pd.read_csv(args.meta)
 
@@ -30,18 +32,17 @@ if __name__ == '__main__':
             continue
         seq = str(record.seq)
         genus = accession_to_genus[record.id]
-        for idx in range(len(seq) - params['k'] + 1):
-            db[seq[idx:idx+params['k']]].add(genus)
+        for idx in range(len(seq) - k + 1):
+            db[seq[idx : idx + k]].add(genus)
 
-    if not os.path.isdir(args.model_dir):
-        os.makedirs(args.model_dir)
+    # print('Length before discard:', len(db))
+    discard_candidate = set()
 
-    save_object(db, os.path.join(args.model_dir,  'model_k_' + str(params['k']) + '.pkl'))
+    for key, val in db.items():
+        if len(val) > 1:
+            discard_candidate.add(key)
 
+    for key in discard_candidate:
+        db.pop(key)
 
-
-
-
-
-
-
+    save_object(db, args.saving_path)
