@@ -5,7 +5,7 @@
 ### Installation
  - Cloning the repository
 ```
-git clone https://github.com/omics-lab/VirusTaxo_v1
+git clone https://github.com/omics-lab/VirusTaxo
 ```
  - Creation of Python Virtual Environment
 ```
