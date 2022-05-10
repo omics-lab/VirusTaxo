@@ -9,7 +9,7 @@ git clone https://github.com/omics-lab/VirusTaxo
 ```
  - Creation of Python Virtual Environment
 ```
-cd VirusTaxo_v1
+cd VirusTaxo
 python3 -m venv environment
 source ./environment/bin/activate
 ```
@@ -18,7 +18,25 @@ source ./environment/bin/activate
 pip install -r requirements.txt
 ```
 
-### Build Custom Database
+### Predict virus taxonomy from fasta file using Prebuilt DB
+
+- Download prebuilt databse of VirusTaxo `vt_db_apr27_2022.tar.gz` from [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing).
+- Extract database files using `tar –xvzf vt_db_apr27_2022.tar.gz`. There are three database files for DNA, RNA, and combined DNA+RNA viruses.
+   - vt_db_all_virus_kmer_20.pkl # combined database for DNA+RNA viruses  
+   - vt_db_dna_virus_kmer_21.pkl # database for DNA viruses
+   - vt_db_rna_virus_kmer_17.pkl # database for RNA viruses
+
+- Example of predicting virus taxonomy from the combined database 
+   - Perform de novo assembly to generate `input_contig.fasta` file from your metagenomic library
+   - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 pe_1.fq -2 pe_2.fq -o out`
+
+```
+python3 predict.py \
+   --model_path /path/vt_db_all_virus_kmer_20.pkl \
+   --seq ./input_contig.fasta
+```
+
+### Build custom database
 
 - Preparing a metadata file in `csv` format. The metadata file must contain two columns named `Id`  and `Genus`. For example:
 ```
@@ -62,7 +80,7 @@ python3 build.py \
    - `saving_path`: The program will save a pickle file (A DB File) in the mentioned path.
 
    
-### Predict from fasta file using Prebuilt DB
+### Predict virus taxonomy from fasta file using the custom database
 
 Sample input.fasta
 
