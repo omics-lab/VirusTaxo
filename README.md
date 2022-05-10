@@ -1,6 +1,16 @@
-### Requirements
- - python >= 3.8
- - Linux
+### VirusTaxo
+
+For taxonomic classification of viruses from metagenomic sequences, VirusTaxo builds database from diverse (e.g., 402 DNA and 280 RNA) genera of viruses. VirusTaxo has an average accuracy of 93% at genus level prediction across DNA and RNA viruses.
+
+### Web application of virus taxo
+
+- Web-based application of VirusTaxo is available at [Omics Lab](https://omics-lab.com/virustaxo) 
+
+
+### Running VirusTaxo from the command line
+- Requirements 
+  - python >= 3.8
+  - Linux
 
 ### Installation
  - Cloning the repository
@@ -117,4 +127,4 @@ k141_21524      238     Tobamovirus     0.0
    
 ### Citation
 
-Rajan Saha Raju, Abdullah Al Nahid, Preonath Shuvo,  Rashedul Islam. [VirusTaxo: Taxonomic classification of virus genome using multi-class hierarchical classification by k-mer enrichment](https://www.biorxiv.org/content/10.1101/2021.04.29.442004v1.article-metrics). bioRxiv, April 30, 2021.
+Rajan Saha Raju, Abdullah Al Nahid, Preonath Shuvo,  Rashedul Islam. [VirusTaxo: Taxonomic classification of virus genome using multi-class hierarchical classification by k-mer enrichment](https://www.biorxiv.org/content/10.1101/2021.04.29.442004v1.full). bioRxiv, April 30, 2021.
