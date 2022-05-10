@@ -8,11 +8,11 @@ For taxonomic classification of viruses from metagenomic sequences, VirusTaxo bu
 
 
 ### Running VirusTaxo from the command line
-- Requirements 
-  - python >= 3.8
-  - Linux
+#### Requirements 
+- python >= 3.8
+- Linux
 
-### Installation
+#### Installation
  - Cloning the repository
 ```
 git clone https://github.com/omics-lab/VirusTaxo
