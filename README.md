@@ -113,3 +113,8 @@ Id              Length  Genus           Entropy
 k141_107617     309     Unclassified    1.0
 k141_21524      238     Tobamovirus     0.0
 ```
+
+   
+### Citation
+
+Rajan Saha Raju, Abdullah Al Nahid, Preonath Shuvo,  Rashedul Islam. [VirusTaxo: Taxonomic classification of virus genome using multi-class hierarchical classification by k-mer enrichment](https://www.biorxiv.org/content/10.1101/2021.04.29.442004v1.article-metrics). bioRxiv, April 30, 2021.
