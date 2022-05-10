@@ -28,7 +28,7 @@ source ./environment/bin/activate
 pip install -r requirements.txt
 ```
 
-### Predict virus taxonomy from fasta file using prebuilt database
+#### Predict virus taxonomy from fasta file using prebuilt database
 
 - Download prebuilt databse of VirusTaxo `vt_db_apr27_2022.tar.gz` from [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing).
 - Extract three database files using `tar –xvzf vt_db_apr27_2022.tar.gz`. 
@@ -46,7 +46,7 @@ python3 predict.py \
    --seq ./input_contig.fasta
 ```
 
-### Build custom database
+#### Build custom database
 
 - Preparing a metadata file in `csv` format. The metadata file must contain two columns named `Id`  and `Genus`. For example:
 ```
@@ -90,7 +90,7 @@ python3 build.py \
    - `saving_path`: The program will save a pickle file (A DB File) in the mentioned path.
 
    
-### Predict virus taxonomy from fasta file using the custom database
+#### Predict virus taxonomy from fasta file using the custom database
 
 Sample input.fasta
 
