@@ -38,12 +38,12 @@ pip install -r requirements.txt
 
 - Example of predicting virus taxonomy from the combined database 
    - Perform de novo assembly to generate `input_contig.fasta` file from your metagenomic library
-   - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 pe_1.fq -2 pe_2.fq -o out`
+   - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 pe_1.fq -2 pe_2.fq -o contig.fasta`
 
 ```
 python3 predict.py \
    --model_path /path/vt_db_all_virus_kmer_20.pkl \
-   --seq ./input_contig.fasta
+   --seq ./contig.fasta
 ```
 
 #### Build custom database
@@ -127,4 +127,5 @@ k141_21524      238     Tobamovirus     0.0
    
 ### Citation
 
-Rajan Saha Raju, Abdullah Al Nahid, Preonath Shuvo,  Rashedul Islam. [VirusTaxo: Taxonomic classification of virus genome using multi-class hierarchical classification by k-mer enrichment](https://www.biorxiv.org/content/10.1101/2021.04.29.442004v1.full). bioRxiv, April 30, 2021.
+Rajan Saha Raju, Abdullah Al Nahid, Preonath Chondrow Dev,  Rashedul Islam. [VirusTaxo: Taxonomic classification of viruses from the genome sequence using k-mer enrichment
+](https://www.sciencedirect.com/science/article/pii/S0888754322001598). Genomics, Volume 114, Issue 4, July 2022.
