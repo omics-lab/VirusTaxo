@@ -7,7 +7,7 @@ For taxonomic classification of viruses from metagenomic sequences, VirusTaxo bu
 - Web-based application of VirusTaxo is available at [Omics Lab](https://omics-lab.com/virustaxo) 
 
 
-### Running VirusTaxo from the command line
+### Running VirusTaxo 
 #### Requirements 
 - python >= 3.8
 - Linux
@@ -37,7 +37,7 @@ pip install -r requirements.txt
    - vt_db_rna_virus_kmer_17.pkl  (database for RNA viruses)
 
 - Example of predicting virus taxonomy from the combined database 
-   - Perform de novo assembly to generate `input_contig.fasta` file from your metagenomic library
+   - Perform de novo assembly to generate `contig.fasta` file from your metagenomic library
    - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 pe_1.fq -2 pe_2.fq -o contig.fasta`
 
 ```
@@ -116,7 +116,7 @@ CAAGAGCAGGAGTACCTGAATTGACATCACCTGACCAACGCAATTTCTCTACATTCTC
    --seq ./input.fasta
 ```
 
-- Sample Output. Higher entropy (>0.5) is considered as undetected and lower entropy (≤0.5) provides the higher level of certainty at the genus level prediction.
+- Sample Output. Higher entropy (>0.5) is considered as `Unclassified` and lower entropy (≤0.5) provides the higher level of certainty at the genus level prediction.
 
 ```
 Id              Length  Genus           Entropy
