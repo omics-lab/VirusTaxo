@@ -46,7 +46,7 @@ python3 predict.py \
    --seq ./contig.fasta
 ```
 
-#### Build custom database
+#### Build your custom database
 
 - Preparing a metadata file in `csv` format. The metadata file must contain two columns named `Id`  and `Genus`. For example:
 ```
@@ -116,7 +116,7 @@ CAAGAGCAGGAGTACCTGAATTGACATCACCTGACCAACGCAATTTCTCTACATTCTC
    --seq ./input.fasta
 ```
 
-- Sample Output
+- Sample Output. Higher entropy (>0.5) is considered as undetected and lower entropy (≤0.5) provides the higher level of certainty at the genus level prediction.
 
 ```
 Id              Length  Genus           Entropy
@@ -124,7 +124,13 @@ k141_107617     309     Unclassified    1.0
 k141_21524      238     Tobamovirus     0.0
 ```
 
-   
+### Hierarchical classification 
+
+[Find here the earlier version of VirusTaxo with hierarchical classification and the codes used in publication.](https://github.com/omics-lab/VirusTaxo_Hierarchical)
+
+### Contact
+Rashedul Islam, PhD (rashedul.gen@gmail.com)
+
 ### Citation
 
 Rajan Saha Raju, Abdullah Al Nahid, Preonath Chondrow Dev,  Rashedul Islam. [VirusTaxo: Taxonomic classification of viruses from the genome sequence using k-mer enrichment
