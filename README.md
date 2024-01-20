@@ -2,6 +2,13 @@
 
 For taxonomic classification of viruses from metagenomic sequences, VirusTaxo builds database from diverse (e.g., 402 DNA and 280 RNA) genera of viruses. VirusTaxo has an average accuracy of 93% at genus level prediction across DNA and RNA viruses.
 
+### Method limitation and interpretation
+
+- VirusTaxo is trained on known virus sequences. Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match.   
+
+- To use VirusTaxo, it is highly recommeded to filter our non-viral sequences using tools like blast or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder). 
+
+
 ### Web application of VirusTaxo
 
 - Web-based application of VirusTaxo is available at [Omics Lab](https://omics-lab.com/virustaxo) 
@@ -38,7 +45,8 @@ pip install -r requirements.txt
 
 - Example of predicting virus taxonomy from the combined database 
    - Perform de novo assembly to generate `contig.fasta` file from your metagenomic library
-   - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 pe_1.fq -2 pe_2.fq -o contig.fasta`
+   - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq -o contig.fasta`
+   - filter out
 
 ```
 python3 predict.py \
