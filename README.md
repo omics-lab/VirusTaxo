@@ -6,8 +6,9 @@ For taxonomic classification of viruses from metagenomic sequences, VirusTaxo bu
 
 - VirusTaxo is trained on known virus sequences. Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match.   
 
-- To use VirusTaxo, it is highly recommeded to filter our non-viral sequences using tools like blast or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder). 
+- To use VirusTaxo, it is highly recommeded to filter our non-viral sequences using tools like [blast]() or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder). 
 
+- To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo.
 
 ### Web application of VirusTaxo
 
@@ -46,7 +47,6 @@ pip install -r requirements.txt
 - Example of predicting virus taxonomy from the combined database 
    - Perform de novo assembly to generate `contig.fasta` file from your metagenomic library
    - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq -o contig.fasta`
-   - filter out
 
 ```
 python3 predict.py \
