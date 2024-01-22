@@ -125,6 +125,7 @@ CAAAGATATGGATTCTCTGAGAGGTATTGTTCGTGAAGGAATAGAAAAGGACAGCCTGGATGTTAAGGTG
 ```
 
 - Sample Output. Higher entropy (>0.5) is considered as `Unclassified` and lower entropy (≤0.5) provides the higher level of certainty at the genus level prediction.
+- Genus name `Unknown` means the genus name is not assigned in the [ICTV classification](https://ictv.global/). 
 
 ```
 Id      Length  Genus   Entropy
