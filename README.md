@@ -47,8 +47,8 @@ pip install -r requirements.txt
    - vt_db_rna_virus_kmer_17.pkl  (database for RNA viruses)
 
 - Example of predicting virus taxonomy from the combined database 
-   - Perform de novo assembly to generate `contig.fasta` file from your metagenomic library
-   - Example for de novo assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`
+   - Perform *de novo* assembly to generate `contig.fasta` file from your metagenomic library
+   - *De novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`
 
 ```
 python3 predict.py \
