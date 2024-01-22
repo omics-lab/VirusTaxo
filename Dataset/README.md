@@ -5,6 +5,7 @@
 - download process: select columns of the table and use downlowd button at the top to get sequence and metadata
 - download date: 21 Jan 2024
 
+```
 .
 ├── DNA_9384_meta.csv (latest)
 ├── DNA_RNA_18451_meta.csv (latest)
@@ -15,6 +16,7 @@
 ├── RNA_seq.fasta (previous)
 ├── data_processing.R
 └── sequences_20240122_8132761_with_version.csv (latest)
+```
 
 ### Contact
 Rashedul Islam, PhD (rashedul.gen@gmail.com)
