@@ -56,7 +56,7 @@ python3 predict.py \
    --seq ./contig.fasta
 ```
 
-#### Build your custom database
+### Build your custom database
 
 - Preparing a metadata file in `csv` format. The metadata file must contain two columns named `Id`  and `Genus`. For example:
 ```
