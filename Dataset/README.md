@@ -3,6 +3,7 @@
 #### data download
 - [NCBI data](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&SourceDB_s=RefSeq)
 - download process: select columns of the table and use downlowd button at the top to get sequence and metadata
+- [metadata](./sequences_20240122_8132761_with_version.csv) and [fasta sequence](https://drive.google.com/file/d/1FBPgDFVvkIrfJ6XwEbpCPZesiaAbF67d/view?usp=sharing) are available to download
 - download date: 21 Jan 2024
 
 ```
