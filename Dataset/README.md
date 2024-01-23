@@ -9,6 +9,7 @@
 
 ```
 .
+├── asm_islam.et.al_6648_covid.fasta (covid19 assembly)
 ├── DNA_9384_meta.csv (latest)
 ├── DNA_RNA_18451_meta.csv (latest)
 ├── README.md 

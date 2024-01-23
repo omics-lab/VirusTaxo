@@ -16,7 +16,7 @@ python3 build.py \
    
 # DNA_RNA
 python3 build.py \
-   --meta ./Dataset/DNA_9384_meta.csv \
+   --meta ./Dataset/DNA_RNA_18451_meta.csv \
    --seq ./Dataset/sequences_20240122_3701960.fasta \
    --k 20 \
    --saving_path ./DNA_RNA_18451_k20.pkl 
