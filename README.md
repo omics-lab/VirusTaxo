@@ -40,11 +40,13 @@ pip install -r requirements.txt
 
 #### Predict virus taxonomy from fasta file using prebuilt database
 
-- Download prebuilt databse of VirusTaxo `vt_db_apr27_2022.tar.gz` from [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing).
-- Extract three database files using `tar –xvzf vt_db_apr27_2022.tar.gz`. 
-   - vt_db_all_virus_kmer_20.pkl  (combined database for DNA and RNA viruses)  
-   - vt_db_dna_virus_kmer_21.pkl  (database for DNA viruses)
-   - vt_db_rna_virus_kmer_17.pkl  (database for RNA viruses)
+- Download prebuilt databse of VirusTaxo 
+   - datavase.v2.2024 (recommended): download `vt_db_jan21_2024.tar.gz` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
+   - datavase.v1.2022: download `vt_db_apr27_2022.tar.gz` from [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing).
+- Extract three database files using `tar –xvzf vt_db_jan21_2024.tar.gz`. 
+   - DNA_RNA_18451_k20.pkl (recommended): database for both DNA and RNA viruses  
+   - DNA_9384_k21.pkll : database for DNA viruses only
+   - RNA_9067_k17.pkl : database for RNA viruses only
 
 - Example of predicting virus taxonomy from the combined database 
    - Perform *de novo* assembly to generate `contig.fasta` file from your metagenomic library
