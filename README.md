@@ -86,8 +86,8 @@ CAAAGATATGGATTCTCTGAGAGGTATTGTTCGTGAAGGAATAGAAAAGGACAGCCTGGATGTTAAGGTG
  - DB Building cmd:
 ```
 python3 build.py \
-   --meta ./Dataset/RNA/RNA_meta.csv \
-   --seq ./Dataset/RNA/RNA_seq.fasta \
+   --meta ./Dataset/RNA_meta.csv \
+   --seq ./Dataset/RNA_seq.fasta \
    --k 17 \
    --saving_path ./model/RNA.pkl
 ```
