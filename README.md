@@ -1,6 +1,6 @@
 ### VirusTaxo
 
-For taxonomic classification of viruses from metagenomic sequences, VirusTaxo builds database from diverse (e.g., 402 DNA and 280 RNA) genera of viruses. VirusTaxo has an average accuracy of 93% at genus level prediction across DNA and RNA viruses.
+For taxonomic classification of viruses sequences, VirusTaxo builds database from both DNA and RNA viruses. VirusTaxo has an average accuracy of 93% at genus level prediction across DNA and RNA viruses.
 
 ### Method limitation and interpretation
 
