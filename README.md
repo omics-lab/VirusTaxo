@@ -1,6 +1,6 @@
 ### VirusTaxo
 
-For taxonomic classification of viruses sequences, VirusTaxo builds database from both DNA and RNA viruses. VirusTaxo has an average accuracy of 93% at genus level prediction across DNA and RNA viruses.
+VirusTaxo provides taxonomic classification of viruse sequences. VirusTaxo has an average accuracy of 93% at genus level across DNA and RNA viruses.
 
 ### Method limitation and interpretation
 
