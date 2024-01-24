@@ -38,7 +38,7 @@ source ./environment/bin/activate
 pip install -r requirements.txt
 ```
 
-#### Predict virus taxonomy from fasta file using prebuilt database
+### Predict virus taxonomy from fasta file using prebuilt database
 
 - Download prebuilt databse of VirusTaxo 
    - database.v2_2024 (recommended): download `vt_db_jan21_2024.tar.gz` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
