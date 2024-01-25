@@ -21,6 +21,18 @@ python3 build.py \
    --k 20 \
    --saving_path ./DNA_RNA_18451_k20.pkl 
 
+# RNA
+python3 build.py \
+   --meta ./Dataset/RNA_meta_4k.csv \
+   --seq ./Dataset/RNA_seq.fasta \
+   --k 17 \
+   --saving_path ./RNA_4k.pkl
+
+
+
+
+
+
 # 
 python3 predict.py \
     --model_path ./DNA_9384_k21.pkl \
