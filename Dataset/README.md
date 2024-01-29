@@ -10,15 +10,14 @@
 ```
 .
 ├── asm_islam.et.al_6648_covid.fasta (covid19 assembly)
-├── DNA_9384_meta.csv (latest)
-├── DNA_RNA_18451_meta.csv (latest)
+├── DNA_9384_meta.csv (DNA metadata latest)
+├── DNA_RNA_18451_meta.csv (DNA and RNA metadata latest)
 ├── README.md 
-├── RNA_9067_meta.csv (latest)
-├── RNA_meta.csv (previous)
+├── RNA_9067_meta.csv (RNA metadata latest)
+├── RNA_meta.csv (RNA metadata previous)
 ├── RNA_meta_backup.csv (previous)
-├── RNA_seq.fasta (previous)
-├── data_processing.R
-└── sequences_20240122_8132761_with_version.csv (latest)
+├── RNA_seq.fasta (RNA virus sequence previous)
+└── RNA_0.5k_test.pkl (test database with 500 RNA sequence)
 ```
 
 ### Contact
