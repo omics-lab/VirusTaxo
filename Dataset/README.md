@@ -1,8 +1,7 @@
 ### VirusTaxo Dataset
 
 #### data download
-- [NCBI data](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&SourceDB_s=RefSeq)
-- download process: select columns of the table and use downlowd button at the top to get sequence and metadata
+- [NCBI data](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide&SourceDB_s=RefSeq) Select columns of the table and use downlowd button at the top to get sequence and metadata
 - [metadata](./sequences_20240122_8132761_with_version.csv) and [fasta sequence](https://drive.google.com/file/d/1FBPgDFVvkIrfJ6XwEbpCPZesiaAbF67d/view?usp=sharing) are available to download
 - download date: 21 Jan 2024
 - All covid19 assembly by [Islam R et al, 2021](https://academic.oup.com/bib/article/22/5/bbab102/6210065) are available [here](https://drive.google.com/file/d/1fEPE3dcSMU4Ojq4T_C67owoIGfLwky6Y/view?usp=sharing)
