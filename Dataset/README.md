@@ -15,7 +15,6 @@
 ├── README.md 
 ├── RNA_9067_meta.csv (RNA metadata latest)
 ├── RNA_meta.csv (RNA metadata previous)
-├── RNA_meta_backup.csv (previous)
 ├── RNA_seq.fasta (RNA virus sequence previous)
 └── RNA_0.5k_test.pkl (test database with 500 RNA sequence)
 ```
