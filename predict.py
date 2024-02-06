@@ -63,6 +63,10 @@ if __name__ == '__main__':
 
     parser.add_argument('--seq', required=True,
                         help='Absolute or relative path of fasta sequence file')
+    
+    parser.add_argument('--entropy', required=True,
+                        help='')
+
 
     args = parser.parse_args()
 

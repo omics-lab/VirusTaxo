@@ -6,11 +6,9 @@ VirusTaxo provides taxonomic classification of virus sequences. VirusTaxo has an
 
 - VirusTaxo is trained on known virus sequences and designed to predict taxonomy of virus sequences. 
 
-- Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match. To use VirusTaxo, please make sure to remove non-virus sequences.    
+- Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match. To use VirusTaxo, please make sure to remove non-virus sequences. If your sample contains non-virus sequences, it is highly recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder). 
 
-- If your sample contains non-virus sequences, it is highly recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder). 
-
-- To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
+- To avoid contaimination with host sequences, please filter out host sequences by mapping the reads to host reference genomes before using VirusTaxo to classify virus sequences. 
 
 ### Web application of VirusTaxo
 
@@ -23,9 +21,9 @@ VirusTaxo provides taxonomic classification of virus sequences. VirusTaxo has an
 - Linux
 
 #### Installation
- - Cloning the repository
+ - Cloning the repository using ssh
 ```
-git clone https://github.com/omics-lab/VirusTaxo
+git clone git@github.com:omics-lab/VirusTaxo.git
 ```
  - Creation of Python Virtual Environment
 ```
@@ -40,10 +38,10 @@ pip install -r requirements.txt
 
 ### Predict virus taxonomy from fasta file using prebuilt database
 
-- Download prebuilt databse of VirusTaxo 
+- Download prebuilt database of VirusTaxo 
    - database.v2_2024 (recommended): download `vt_db_jan21_2024.tar.gz` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
    - database.v1_2022: download `vt_db_apr27_2022.tar.gz` from [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing).
-- Extract three database files using `tar –xvzf vt_db_jan21_2024.tar.gz`. 
+- Extract the whole database using `tar –xvzf vt_db_jan21_2024.tar.gz` to generate create database files
    - DNA_RNA_18451_k20.pkl (recommended): database for both DNA and RNA viruses  
    - DNA_9384_k21.pkll : database for DNA viruses only
    - RNA_9067_k17.pkl : database for RNA viruses only
