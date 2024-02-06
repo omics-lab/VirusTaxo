@@ -65,7 +65,7 @@ if __name__ == '__main__':
                         help='Absolute or relative path of fasta sequence file')
     
     parser.add_argument('--entropy', required=True,
-                        help='')
+                        help='Entropy value used as a threshold')
 
 
     args = parser.parse_args()
