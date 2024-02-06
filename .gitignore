@@ -1,3 +1,6 @@
 # Ignore the database file
 *tar.gz
 vt_db_jan21_2024
+
+# Ignore environment
+environment
