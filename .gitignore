@@ -1,0 +1,12 @@
+# Ignore files
+.DS_Store 
+
+# Ignore directory
+environment/
+.environment/
+temp/
+bk/
+model/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
