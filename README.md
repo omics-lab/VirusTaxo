@@ -2,16 +2,6 @@
 
 VirusTaxo provides taxonomic classification of virus sequences. VirusTaxo has an average accuracy of 93% at genus level across DNA and RNA viruses.
 
-### Method limitation and interpretation
-
-- VirusTaxo is trained on known virus sequences and designed to predict taxonomy of virus sequences. 
-
-- Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match. To use VirusTaxo, please make sure to remove non-virus sequences.    
-
-- If your sample contains non-virus sequences, it is highly recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder). 
-
-- To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
-
 ### Web application of VirusTaxo
 
 - Web-based application of VirusTaxo is available at [Omics Lab](https://omics-lab.com/virustaxo) 
@@ -112,18 +102,33 @@ python3 build.py \
    --seq ./Dataset/input.fasta
 ```
 
-- Sample Output. Higher entropy (>0.5) is considered as `Unclassified` and lower entropy (≤0.5) provides the higher level of certainty at the genus level prediction.
+#### Interpretation of output
+- `Unclassified` means not hit is found with the reference database
+- Lower `entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `entropy` cutoff for better prediction. 
+   - We recommend to filter out the rows with `entropy` cutoff of ≤0.5. 
+- Higher `enrichment_score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `enrichment_score` cutoff for better prediction. `enrichment_score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
+   - We recommend to filter out the rows with `enrichment_score` cutoff of >=0.8. 
 - Genus name `Unknown` means the genus name is not assigned in the [ICTV classification](https://ictv.global/). 
 
 ```
-Id      Length  Genus   Entropy
-NC_004205.1     280     Seadornavirus   0.0
-NC_038276.1     280     Ledantevirus    0.0
+Id      Length  Genus   Entropy    Enrichment_Score
+NC_004205.1     280     Seadornavirus   0.0    1.0
+NC_038276.1     280     Ledantevirus    0.0    0.994
 ```
 
 ### Hierarchical classification 
 
 [Find here the earlier version of VirusTaxo with hierarchical classification and the codes used in publication.](https://github.com/omics-lab/VirusTaxo_Hierarchical)
+
+### Method limitation and interpretation
+
+- VirusTaxo is trained on known virus sequences and designed to predict taxonomy of virus sequences. 
+
+- Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match. To use VirusTaxo, please make sure to remove non-virus sequences.    
+
+- If your sample contains non-virus sequences, it is highly recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`. 
+
+- To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
 
 ### Contact
 Rashedul Islam, PhD (rashedul.gen@gmail.com)
