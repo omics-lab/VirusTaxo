@@ -38,25 +38,40 @@ pip install -r requirements.txt
    - *De novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`
    - If there are non-virus sequences, filter them out using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`  
 
+- Run with sample `contig.fasta` file
+
 ```
 python3 predict.py \
    --model_path /path/DNA_RNA_18451_k20.pkl \
-   --seq ./contig.fasta
+   --seq ./Dataset/contig.fasta
+```
+
+- Output for all query sequence
+
+```
+Id      Length  Genus   Entropy Enrichment_Score
+QuerySeq-1      219     Unclassified    1.0     0
+QuerySeq-2      720     Betacoronavirus 0.0     0.9744318181818182
+QuerySeq-3      1540    Unknown_genus   0.5270653409743079      0.001968503937007874
+QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
+```
+
+- Output after filtering the query sequences `Entropy` <=0.5 and `Enrichment_Score` >=0.8 (**Recommended**)
+
+```
+Id      Length  Genus   Entropy Enrichment_Score
+QuerySeq-2      720     Betacoronavirus 0.0     0.9744318181818182
+QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
 ```
 
 #### 3. Interpretation of output
 - `Unclassified` means not hit is found with the reference database
-- Lower `entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `entropy` cutoff for better prediction. 
-   - We recommend to filter out the query sequences with `entropy` cutoff of ≤0.5. 
-- Higher `enrichment_score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `enrichment_score` cutoff for better prediction. `enrichment_score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
-   - We recommend to filter out the query sequences with `enrichment_score` cutoff of >=0.8. 
+- Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
+   - We recommend to filter out the query sequences with `Entropy` cutoff of ≤0.5. 
+- Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
+   - We recommend to filter out the query sequences with `Enrichment_Score` cutoff of >=0.8. 
 - Genus name `Unknown` means the genus name is not assigned in the [ICTV classification](https://ictv.global/). 
 
-```
-Id      Length  Genus   Entropy    Enrichment_Score
-NC_004205.1     280     Seadornavirus   0.0    1.0
-NC_038276.1     280     Ledantevirus    0.0    0.994
-```
 
 ### 4. Build your custom database
 
