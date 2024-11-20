@@ -63,7 +63,7 @@ QuerySeq-2      720     Betacoronavirus 0.0     0.9744318181818182
 QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
 ```
 
-#### 3. Interpretation of output
+### 3. Interpretation of output
 - `Unclassified` means not hit is found with the reference database
 - Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
    - We recommend to filter out the query sequences with `Entropy` cutoff of ≤0.5. 
