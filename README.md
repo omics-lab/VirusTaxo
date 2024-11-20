@@ -33,12 +33,12 @@ pip install -r requirements.txt
    - DNA_9384_k21.pkll : database for DNA viruses only
    - RNA_9067_k17.pkl : database for RNA viruses only
 
-- Example of predicting virus taxonomy from the combined database 
+- Assemble the metagenomic contigs and filter out non-virus sequences. 
    - Perform *de novo* assembly to generate `contig.fasta` file from your metavirome or metagenomic library
    - *De novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`
    - If there are non-virus sequences, filter them out using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`  
 
-- Run with sample `contig.fasta` file
+- Run with the sample `contig.fasta` file
 
 ```
 python3 predict.py \
