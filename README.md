@@ -1,13 +1,8 @@
-## VirusTaxo
+## VirusTaxo: Taxonomic classification of viruses from metagenomic contigs
 
 VirusTaxo provides taxonomic classification of virus sequences. VirusTaxo has an average accuracy of 93% at genus level across DNA and RNA viruses.
 
-### 1. Web application of VirusTaxo
-
-- Web-based application of VirusTaxo is available at [Omics Lab](https://omics-lab.com/virustaxo) 
-
-
-### 2. Running VirusTaxo 
+### 1. Running VirusTaxo 
 #### Requirements 
 - python >= 3.8
 - Linux
@@ -28,7 +23,7 @@ source ./environment/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Predict virus taxonomy from fasta file using prebuilt database
+### 2. Predict virus taxonomy from fasta file using prebuilt database
 
 - Download prebuilt databse of VirusTaxo 
    - database.v2_2024 (recommended): download `vt_db_jan21_2024.tar.gz` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
@@ -49,12 +44,12 @@ python3 predict.py \
    --seq ./contig.fasta
 ```
 
-#### 4. Interpretation of output
+#### 3. Interpretation of output
 - `Unclassified` means not hit is found with the reference database
 - Lower `entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `entropy` cutoff for better prediction. 
-   - We recommend to filter out the rows with `entropy` cutoff of ≤0.5. 
+   - We recommend to filter out the query sequences with `entropy` cutoff of ≤0.5. 
 - Higher `enrichment_score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `enrichment_score` cutoff for better prediction. `enrichment_score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
-   - We recommend to filter out the rows with `enrichment_score` cutoff of >=0.8. 
+   - We recommend to filter out the query sequences with `enrichment_score` cutoff of >=0.8. 
 - Genus name `Unknown` means the genus name is not assigned in the [ICTV classification](https://ictv.global/). 
 
 ```
@@ -63,7 +58,7 @@ NC_004205.1     280     Seadornavirus   0.0    1.0
 NC_038276.1     280     Ledantevirus    0.0    0.994
 ```
 
-### 5. Build your custom database
+### 4. Build your custom database
 
 - Preparing a metadata file in `csv` format. The metadata file must contain two columns named `Id`  and `Genus`. For example:
 ```
@@ -107,7 +102,7 @@ python3 build.py \
    - `saving_path`: The program will save a pickle file (A DB File) in the mentioned path.
 
    
-#### 6. Predict virus taxonomy from fasta file using the custom database
+#### 5. Predict virus taxonomy from fasta file using the custom database
 
 - Prediction cmd with a sample input.fasta
 ```
@@ -116,11 +111,11 @@ python3 build.py \
    --seq ./Dataset/input.fasta
 ```
 
-### 7. Hierarchical classification 
+### 6. Hierarchical classification 
 
 [Find here the earlier version of VirusTaxo with hierarchical classification and the codes used in publication.](https://github.com/omics-lab/VirusTaxo_Hierarchical)
 
-### 8. Method limitation and interpretation
+### 7. Method limitation and interpretation
 
 - VirusTaxo is trained on known virus sequences and designed to predict taxonomy of virus sequences. 
 
@@ -130,10 +125,10 @@ python3 build.py \
 
 - To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
 
-### 9. Contact
+### 8. Contact
 Rashedul Islam, PhD (rashedul.gen@gmail.com)
 
-### 10. Citation
+### 9. Citation
 
 Rajan Saha Raju, Abdullah Al Nahid, Preonath Chondrow Dev,  Rashedul Islam. [VirusTaxo: Taxonomic classification of viruses from the genome sequence using k-mer enrichment
 ](https://www.sciencedirect.com/science/article/pii/S0888754322001598). Genomics, Volume 114, Issue 4, July 2022.
