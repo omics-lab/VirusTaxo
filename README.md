@@ -34,7 +34,7 @@ pip install -r requirements.txt
    - RNA_9067_k17.pkl : database for RNA viruses only
 
 - Assemble the metagenomic contigs and filter out non-virus sequences. 
-   - Perform *de novo* assembly to generate `contig.fasta` file from your metavirome or metagenomic library.*De novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`
+   - Perform *de novo* assembly to generate `contig.fasta` file from your metavirome or metagenomic library. Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`
    - If there are non-virus sequences, filter them out using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./` (**Recommended**) 
 
 - Run with the sample `contig.fasta` file
@@ -45,7 +45,7 @@ python3 predict.py \
    --seq ./Dataset/contig.fasta
 ```
 
-- Output for all query sequence
+- Output for all 4 query sequences
 
 ```
 Id      Length  Genus   Entropy Enrichment_Score
@@ -55,7 +55,7 @@ QuerySeq-3      1540    Unknown_genus   0.5270653409743079      0.00196850393700
 QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
 ```
 
-- Output after filtering the query sequences `Entropy` <=0.5 and `Enrichment_Score` >=0.8 (**Recommended**)
+- Output after filtering the query sequences by `Entropy` <=0.5 and `Enrichment_Score` >=0.8 (**Recommended**)
 
 ```
 Id      Length  Genus   Entropy Enrichment_Score
