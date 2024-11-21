@@ -25,10 +25,14 @@ pip install -r requirements.txt
 
 ### 2. Predict virus taxonomy from fasta file using prebuilt database
 
-- Download prebuilt databse of VirusTaxo `database.v2_2024` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
-- Extract three database files using: 
+- Download prebuilt databse (`database.v2_2024`) of VirusTaxo
 
-   ```tar –xvzf vt_db_jan21_2024.tar.gz```
+```
+gdown "https://drive.google.com/uc?id=1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs"
+
+# Extract db files
+tar -xvzf vt_db_jan21_2024.tar.gz
+```
 
 - Database files and usage:
 
@@ -44,12 +48,12 @@ pip install -r requirements.txt
 
    ```megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta```
 
-- Run with the sample `contig.fasta` file
+- Run with the sample [contig.fasta](./Dataset/contig.fasta) file
 
 ```
 python3 predict.py \
-   --model_path /path/DNA_RNA_18451_k20.pkl \
-   --seq ./Dataset/contig.fasta
+   --model_path /path/DNA_RNA_18451_k20.pkl \ # database file
+   --seq ./Dataset/contig.fasta # query fasta file 
 ```
 
 - Example output for 4 query sequences
@@ -58,7 +62,7 @@ python3 predict.py \
 Id              Length  Genus           Entropy Enrichment_Score
 QuerySeq-1      219     NoHit           1.0     0
 QuerySeq-2      720     Betacoronavirus 0.0     0.974
-QuerySeq-3      1540    Unknown_genus   0.527   0.0020
+QuerySeq-3      1540    Unknown_genus   0.527   0.002
 QuerySeq-4      1330    Lentivirus      0.0     0.991
 ```
 
@@ -77,7 +81,6 @@ QuerySeq-4      1330    Lentivirus      0.0     0.991
 - Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
    - We recommend to filter out the query sequences with `Enrichment_Score` cutoff of >=0.8. 
 - Genus name `Unknown` means the genus name is not assigned in the [ICTV classification](https://ictv.global/). 
-
 
 ### 4. Build your custom database
 
@@ -100,7 +103,7 @@ python3 build.py \
    - `meta`: Absolute or relative path of metadata file.
    - `seq`: Absolute or relative path of fasta sequence file.
    - `k` : It denotes the length of k-mer.
-   - `saving_path`: Path to save a pickle file (A DB File).
+   - `saving_path`: Path to save a pickle file (A database File).
 
 
 ### 5. Method limitation and interpretation
