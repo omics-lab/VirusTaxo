@@ -32,7 +32,7 @@ pip install -r requirements.txt
 | db file | Molecule | Usage |
 |----------|----------|----------|
 | DNA_RNA_18451_k20.pkl  | DNA & RNA  | Samples containing both DNA & RNA viruses   |
-| DNA_9384_k21.pkll  | DNA  | Samples containing DNA viruses only |
+| DNA_9384_k21.pkl  | DNA  | Samples containing DNA viruses only |
 | RNA_9067_k17.pkl  | RNA  | Samples containing RNA viruses only |
 
 
@@ -46,14 +46,14 @@ pip install -r requirements.txt
 ```
 python3 predict.py \
    --model_path /path/DNA_RNA_18451_k20.pkl \
-   --seq /path/contig.fasta
+   --seq ./Dataset/contig.fasta
 ```
 
 - Example output for 4 query sequences
 
 ```
 Id              Length  Genus           Entropy Enrichment_Score
-QuerySeq-1      219     Unclassified    1.0     0
+QuerySeq-1      219     NoHit           1.0     0
 QuerySeq-2      720     Betacoronavirus 0.0     0.974
 QuerySeq-3      1540    Unknown_genus   0.527   0.0020
 QuerySeq-4      1330    Lentivirus      0.0     0.991
@@ -68,7 +68,7 @@ QuerySeq-4      1330    Lentivirus      0.0     0.991
 ```
 
 ### 3. Interpretation of output
-- `NoHit` means not hit is found with the reference database
+- `NoHit` means there's no k-mer overlap between the query and database.
 - Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
    - We recommend to filter out the query sequences with `Entropy` cutoff of ≤0.5. 
 - Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
@@ -86,13 +86,13 @@ QuerySeq-4      1330    Lentivirus      0.0     0.991
 
 ```
 python3 build.py \
-   --meta ./Dataset/RNA_meta.csv \ # example csv
-   --seq ./Dataset/RNA_seq.fasta \ # example fasta
+   --meta ./Dataset/RNA_meta.csv \ # provide your metadata file
+   --seq ./Dataset/RNA_seq.fasta \ # provide your fasta file
    --k 17 \
    --saving_path /path/RNA.pkl
 ```
 
- - Details of Parameters 
+ - Parameters 
   
    - `meta`: Absolute or relative path of metadata file.
    - `seq`: Absolute or relative path of fasta sequence file.
@@ -100,7 +100,7 @@ python3 build.py \
    - `saving_path`: Path to save a pickle file (A DB File).
 
 
-### 7. Method limitation and interpretation
+### 5. Method limitation and interpretation
 
 - VirusTaxo is trained on known virus sequences and designed to predict taxonomy of virus sequences. 
 
@@ -110,17 +110,17 @@ python3 build.py \
 
 - To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
 
-### 6. Hierarchical classification 
 
-[Find here the earlier version of VirusTaxo with hierarchical classification and the codes used in publication.](https://github.com/omics-lab/VirusTaxo_Hierarchical)
-
-### Database versions
+### 6. Database versions
 
 | Version  | Date     | Sequences | Download |
 |----------|----------|----------|----------|
 | database.v2_2024  | Jan21_2024  | DNA=9384 &  RNA=9067  | [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing)  |
 | database.v1_2022  | Apr27_2022  | DNA=4421 &  RNA=2529  | [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing)  |
 
+### 7. Hierarchical classification 
+
+[Find here the earlier version of VirusTaxo with hierarchical classification and the codes used in publication.](https://github.com/omics-lab/VirusTaxo_Hierarchical)
 
 ### 8. Contact
 Rashedul Islam, PhD (rashedul.gen@gmail.com)
