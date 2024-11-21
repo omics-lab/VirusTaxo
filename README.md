@@ -25,22 +25,28 @@ pip install -r requirements.txt
 
 ### 2. Predict virus taxonomy from fasta file using prebuilt database
 
-- Download prebuilt databse of VirusTaxo 
-   - Download the database `vt_db_jan21_2024.tar.gz` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
+- Download prebuilt databse of VirusTaxo `database.v2_2024` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
 - Extract three database files using `tar –xvzf vt_db_jan21_2024.tar.gz`. 
-   - DNA_RNA_18451_k20.pkl (recommended): database for both DNA and RNA viruses  
-   - DNA_9384_k21.pkll : database for DNA viruses only
-   - RNA_9067_k17.pkl : database for RNA viruses only
+
+
+| db file | Molecule | Usage |
+|----------|----------|----------|
+| DNA_RNA_18451_k20.pkl  | DNA & RNA  | Samples containing both DNA & RNA viruses   |
+| DNA_9384_k21.pkll  | DNA  | Samples containing DNA viruses only |
+| RNA_9067_k17.pkl  | RNA  | Samples containing RNA viruses only |
+
 
 - Assemble the metagenomic contigs from your metavirome or metagenomic library. 
-   - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`.
+   - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
+
+   ```megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta```
 
 - Run with the sample `contig.fasta` file
 
 ```
 python3 predict.py \
    --model_path /path/DNA_RNA_18451_k20.pkl \
-   --seq ./Dataset/contig.fasta
+   --seq /path/contig.fasta
 ```
 
 - Example output for 4 query sequences
@@ -48,17 +54,17 @@ python3 predict.py \
 ```
 Id              Length  Genus           Entropy Enrichment_Score
 QuerySeq-1      219     Unclassified    1.0     0
-QuerySeq-2      720     Betacoronavirus 0.0     0.9744318181818182
-QuerySeq-3      1540    Unknown_genus   0.5270653409743079      0.001968503937007874
-QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
+QuerySeq-2      720     Betacoronavirus 0.0     0.974
+QuerySeq-3      1540    Unknown_genus   0.527   0.0020
+QuerySeq-4      1330    Lentivirus      0.0     0.991
 ```
 
 - Example output after filtering the query sequences by `Entropy` <=0.5 and `Enrichment_Score` >=0.8 (**Recommended**)
 
 ```
 Id              Length  Genus           Entropy Enrichment_Score
-QuerySeq-2      720     Betacoronavirus 0.0     0.9744318181818182
-QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
+QuerySeq-2      720     Betacoronavirus 0.0     0.974
+QuerySeq-4      1330    Lentivirus      0.0     0.991
 ```
 
 ### 3. Interpretation of output
@@ -80,18 +86,18 @@ QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
 
 ```
 python3 build.py \
-   --meta ./Dataset/RNA_meta.csv \
-   --seq ./Dataset/RNA_seq.fasta \
+   --meta ./Dataset/RNA_meta.csv \ # example csv
+   --seq ./Dataset/RNA_seq.fasta \ # example fasta
    --k 17 \
-   --saving_path ./model/RNA.pkl
+   --saving_path /path/RNA.pkl
 ```
 
  - Details of Parameters 
   
    - `meta`: Absolute or relative path of metadata file.
    - `seq`: Absolute or relative path of fasta sequence file.
-   - `k` : It denotes the length of k-mer during database building.
-   - `saving_path`: The program will save a pickle file (A DB File) in the mentioned path.
+   - `k` : It denotes the length of k-mer.
+   - `saving_path`: Path to save a pickle file (A DB File).
 
 
 ### 7. Method limitation and interpretation
