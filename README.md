@@ -1,6 +1,6 @@
 ## VirusTaxo: Taxonomic classification of viruses from metagenomic contigs
 
-VirusTaxo provides taxonomic classification of virus sequences. VirusTaxo has an average accuracy of 93% at genus level across DNA and RNA viruses.
+VirusTaxo has an average accuracy of 93% at genus level across DNA and RNA viruses.
 
 ### 1. Running VirusTaxo 
 #### Requirements 
