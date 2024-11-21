@@ -48,7 +48,7 @@ def predict(fasta_file, model_path):
         length = len(record.seq)
 
         if prediction_1 == -1 and prediction_2 == -1:
-            print(f'{record.id}\t{length}\tUnclassified\t1.0\t0')
+            print(f'{record.id}\t{length}\NoHit\t1.0\t0')
         else:
             if cnt_1 > cnt_2:
                 print(f'{record.id}\t{length}\t{prediction_1}\t{E_1}\t{es1}')

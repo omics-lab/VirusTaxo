@@ -26,16 +26,14 @@ pip install -r requirements.txt
 ### 2. Predict virus taxonomy from fasta file using prebuilt database
 
 - Download prebuilt databse of VirusTaxo 
-   - database.v2_2024 (recommended): download `vt_db_jan21_2024.tar.gz` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
-   - database.v1_2022: download `vt_db_apr27_2022.tar.gz` from [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing).
+   - Download the database `vt_db_jan21_2024.tar.gz` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
 - Extract three database files using `tar –xvzf vt_db_jan21_2024.tar.gz`. 
    - DNA_RNA_18451_k20.pkl (recommended): database for both DNA and RNA viruses  
    - DNA_9384_k21.pkll : database for DNA viruses only
    - RNA_9067_k17.pkl : database for RNA viruses only
 
-- Assemble the metagenomic contigs and filter out non-virus sequences. 
-   - Perform *de novo* assembly to generate `contig.fasta` file from your metavirome or metagenomic library. Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`
-   - If there are non-virus sequences, filter them out using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./` (**Recommended**) 
+- Assemble the metagenomic contigs from your metavirome or metagenomic library. 
+   - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884) `megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta`.
 
 - Run with the sample `contig.fasta` file
 
@@ -45,26 +43,26 @@ python3 predict.py \
    --seq ./Dataset/contig.fasta
 ```
 
-- Output for all 4 query sequences
+- Example output for 4 query sequences
 
 ```
-Id      Length  Genus   Entropy Enrichment_Score
+Id              Length  Genus           Entropy Enrichment_Score
 QuerySeq-1      219     Unclassified    1.0     0
 QuerySeq-2      720     Betacoronavirus 0.0     0.9744318181818182
 QuerySeq-3      1540    Unknown_genus   0.5270653409743079      0.001968503937007874
 QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
 ```
 
-- Output after filtering the query sequences by `Entropy` <=0.5 and `Enrichment_Score` >=0.8 (**Recommended**)
+- Example output after filtering the query sequences by `Entropy` <=0.5 and `Enrichment_Score` >=0.8 (**Recommended**)
 
 ```
-Id      Length  Genus   Entropy Enrichment_Score
+Id              Length  Genus           Entropy Enrichment_Score
 QuerySeq-2      720     Betacoronavirus 0.0     0.9744318181818182
 QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
 ```
 
 ### 3. Interpretation of output
-- `Unclassified` means not hit is found with the reference database
+- `NoHit` means not hit is found with the reference database
 - Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
    - We recommend to filter out the query sequences with `Entropy` cutoff of ≤0.5. 
 - Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
@@ -74,32 +72,12 @@ QuerySeq-4      1330    Lentivirus      0.0     0.9908675799086758
 
 ### 4. Build your custom database
 
-- Preparing a metadata file in `csv` format. The metadata file must contain two columns named `Id`  and `Genus`. For example:
-```
-Id,Genus
-NC_004205.1,Seadornavirus
-NC_038276.1,Ledantevirus
-```
+- Preparing a metadata file in `csv` format. The metadata file must contain columns named `Id`  and `Genus`. Example of metadata file is [here](./Dataset/RNA_meta.csv):
 
-- Preparing a sequence file in `fasta` format. For example:
+- The sequnce IDs must match with the metadata IDs. Example of input fasta file is [here](./Dataset/RNA_seq.fasta).
 
-```
->NC_004205.1
-GTAGAAATTTGTAAAGATTAACAATGTCGAGTTTAAAGGAACATAGGACTAATAAAGCGAATTCAAGAAA
-CTTAATTCGTAGTCCAGATGAAGCTCCACCAACAGATAACAGTTTATTGAACAAAGGTGAAATATTAGCA
-CTTACTTTCAGTGATGAATACATCAAATCAAAACTATTACTTGGTCCGAAACTGCAAGGTTTACCTCCTC
-CATCACTTCCACCCAATTCGTACGGTTATCATTGCAATGGGTCGTTCGCCACCTATTTGCTAAGAGAATC
->NC_038276.1
-CTTGAGAAACTTATTAGTCTATCAAGGTGGTTGTTTTTTCCCACATGAGTCAACAGACATCAAAATGTCT
-GATAGAGTTCCCTTCCGTGTTGCTACCAAGCAACCTGTTAAGCCCATTCTTCCACAAGAGGAGACCCCAG
-GACAATATCCAGCCGACTGGTTCAACACCCACAAAAATGAAAAGCCACGATTAGTCATTCCCTATAAAAT
-CAAAGATATGGATTCTCTGAGAGGTATTGTTCGTGAAGGAATAGAAAAGGACAGCCTGGATGTTAAGGTG
-```
+ - Building database:
 
- **N.B.** The ID of the sequences must present in metadata file.
-
-
- - DB Building cmd:
 ```
 python3 build.py \
    --meta ./Dataset/RNA_meta.csv \
@@ -115,19 +93,6 @@ python3 build.py \
    - `k` : It denotes the length of k-mer during database building.
    - `saving_path`: The program will save a pickle file (A DB File) in the mentioned path.
 
-   
-#### 5. Predict virus taxonomy from fasta file using the custom database
-
-- Prediction cmd with a sample input.fasta
-```
- python3 predict.py \
-   --model_path ./model/RNA.pkl \
-   --seq ./Dataset/input.fasta
-```
-
-### 6. Hierarchical classification 
-
-[Find here the earlier version of VirusTaxo with hierarchical classification and the codes used in publication.](https://github.com/omics-lab/VirusTaxo_Hierarchical)
 
 ### 7. Method limitation and interpretation
 
@@ -138,6 +103,18 @@ python3 build.py \
 - If your sample contains non-virus sequences, it is highly recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`. 
 
 - To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
+
+### 6. Hierarchical classification 
+
+[Find here the earlier version of VirusTaxo with hierarchical classification and the codes used in publication.](https://github.com/omics-lab/VirusTaxo_Hierarchical)
+
+### Database versions
+
+| Version  | Date     | Sequences | Download |
+|----------|----------|----------|----------|
+| database.v2_2024  | Jan21_2024  | DNA=9384 &  RNA=9067  | [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing)  |
+| database.v1_2022  | Apr27_2022  | DNA=4421 &  RNA=2529  | [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing)  |
+
 
 ### 8. Contact
 Rashedul Islam, PhD (rashedul.gen@gmail.com)
