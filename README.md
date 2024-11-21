@@ -26,14 +26,17 @@ pip install -r requirements.txt
 ### 2. Predict virus taxonomy from fasta file using prebuilt database
 
 - Download prebuilt databse of VirusTaxo `database.v2_2024` from [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing).
-- Extract three database files using `tar –xvzf vt_db_jan21_2024.tar.gz`. 
+- Extract three database files using: 
 
+```tar –xvzf vt_db_jan21_2024.tar.gz```
+
+- Database files and usage:
 
 | db file | Molecule | Usage |
 |----------|----------|----------|
-| DNA_RNA_18451_k20.pkl  | DNA & RNA  | Samples containing both DNA & RNA viruses   |
-| DNA_9384_k21.pkl  | DNA  | Samples containing DNA viruses only |
-| RNA_9067_k17.pkl  | RNA  | Samples containing RNA viruses only |
+| DNA_RNA_18451_k20.pkl  | DNA & RNA  | Recommended if samples containing both DNA & RNA viruses   |
+| DNA_9384_k21.pkl  | DNA  | Recommended if samples containing DNA viruses only |
+| RNA_9067_k17.pkl  | RNA  | Recommended if samples containing RNA viruses only |
 
 
 - Assemble the metagenomic contigs from your metavirome or metagenomic library. 
