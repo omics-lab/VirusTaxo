@@ -46,7 +46,29 @@ tar -xvzf vt_db_jan21_2024.tar.gz
 - Assemble the metagenomic contigs from your metavirome or metagenomic library. 
    - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
 
-   ```megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta```
+   ```
+   megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
+   ```
+
+- Usage:
+
+```
+python3 predict.py -h
+
+usage: predict.py [-h] --model_path MODEL_PATH --seq SEQ [--output_csv OUTPUT_CSV] [--entropy ENTROPY] [--enrichment_score ENRICHMENT_SCORE]
+
+options:
+  -h, --help            show this help message and exit
+  --model_path MODEL_PATH
+                        Absolute or relative path of pre-built model
+  --seq SEQ             Absolute or relative path of fasta sequence file
+  --output_csv OUTPUT_CSV
+                        Path to save the output CSV file (default: VirusTaxo_taxonomy_output.csv)
+  --entropy ENTROPY     Entropy threshold for classification (default: 0.5)
+  --enrichment_score ENRICHMENT_SCORE
+                        Enrichment score threshold for classification (default: 0.8)
+
+```
 
 - Run with the sample [contig.fasta](./Dataset/contig.fasta) file
 
@@ -60,27 +82,21 @@ python3 predict.py \
 
 ```
 Id              Length  Genus           Entropy Enrichment_Score
-QuerySeq-1      219     NoHit           1.0     0
-QuerySeq-2      720     Betacoronavirus 0.0     0.974
-QuerySeq-3      1540    Unknown   0.527   0.002
-QuerySeq-4      1330    Lentivirus      0.0     0.991
-```
-
-- Example output after filtering the query sequences by `Entropy` <=0.5 and `Enrichment_Score` >=0.8 (**Recommended**)
-
-```
-Id              Length  Genus           Entropy Enrichment_Score
-QuerySeq-2      720     Betacoronavirus 0.0     0.974
-QuerySeq-4      1330    Lentivirus      0.0     0.991
+QuerySeq-1      219     Unclassified    1.000   0.000
+QuerySeq-2      720     Betacoronavirus 0.000   0.973
+QuerySeq-3      1540    Unknown         0.285   0.003
+QuerySeq-4      1330    Lentivirus      0.000   0.987
 ```
 
 ### 3. Interpretation of output
-- `NoHit` means there's no k-mer overlap between the query and database.
+- In the taxonomic rank column 
+   - `NoHit`: no k-mer overlap between the query and database.
+   - `Unknown`: genus name is not assigned in the [ICTV classification](https://ictv.global/). 
+   - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment_Score` (default <= 0.8) is outside of cutoff.
+
 - Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
-   - We recommend to filter out the query sequences with `Entropy` cutoff of ≤0.5. 
+
 - Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
-   - We recommend to filter out the query sequences with `Enrichment_Score` cutoff of >=0.8. 
-- Genus name `Unknown` means the genus name is not assigned in the [ICTV classification](https://ictv.global/). 
 
 ### 4. Build your custom database
 
@@ -115,7 +131,6 @@ python3 build.py \
 - If your sample contains non-virus sequences, it is highly recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`. 
 
 - To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
-
 
 ### 6. Database versions
 
