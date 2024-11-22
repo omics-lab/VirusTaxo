@@ -2,7 +2,7 @@ import pickle
 from Bio import SeqIO
 from collections import defaultdict
 import numpy as np
-from util import entropy
+from util import entropy, get_rank
 import argparse
 
 
@@ -19,32 +19,8 @@ def predict(fasta_file, model_path):
         break
 
     for record in SeqIO.parse(fasta_file, "fasta"):
-        def get_genus(seq):
-            count = defaultdict(int)
-            for idx in range(len(seq) - k + 1):
-                kmer = seq[idx:idx + k]
-                if kmer in model:
-                    matched_genera = model[kmer]
-                    for genus in matched_genera:
-                        count[genus] += 1
-            genus_score_tuple = list(count.items())
-            # print(f'PrintTouple\t{genus_score_tuple}') 
-            total_kmers = len(seq) - k + 1 
-            # print(total_kmers)
-
-            if not genus_score_tuple:
-                E = 1.0 # no genera are found
-                es = 0 # no genera are found
-                return -1, -1, E, es
-            else:
-                E = entropy(np.array([x for _, x in genus_score_tuple]))
-                prediction = max(genus_score_tuple, key=lambda x: x[1])[0]
-                cnt = max(genus_score_tuple, key=lambda x: x[1])[1]
-                es = cnt / total_kmers
-                return prediction, cnt, E, es
-
-        prediction_1, cnt_1, E_1, es1 = get_genus(record.seq)
-        prediction_2, cnt_2, E_2, es2 = get_genus(record.seq.reverse_complement())
+        prediction_1, cnt_1, E_1, es1 = get_rank(record.seq, model, k)
+        prediction_2, cnt_2, E_2, es2 = get_rank(record.seq.reverse_complement(), model, k)
         length = len(record.seq)
 
         if prediction_1 == -1 and prediction_2 == -1:
