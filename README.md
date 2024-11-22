@@ -50,7 +50,7 @@ tar -xvzf vt_db_jan21_2024.tar.gz
    megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
    ```
 
-- Usage:
+- Usage of `predict.py`:
 
 ```
 python3 predict.py -h
@@ -67,7 +67,6 @@ options:
   --entropy ENTROPY     Entropy threshold for classification (default: 0.5)
   --enrichment_score ENRICHMENT_SCORE
                         Enrichment score threshold for classification (default: 0.8)
-
 ```
 
 - Run with the sample [contig.fasta](./Dataset/contig.fasta) file
