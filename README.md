@@ -83,7 +83,7 @@ python3 predict.py \
 Id              Length  Genus           Entropy Enrichment_Score
 QuerySeq-1      219     Unclassified    1.000   0.000
 QuerySeq-2      720     Betacoronavirus 0.000   0.973
-QuerySeq-3      1540    Unknown         0.285   0.003
+QuerySeq-3      1540    Unknown         0.285   0.820
 QuerySeq-4      1330    Lentivirus      0.000   0.987
 ```
 
