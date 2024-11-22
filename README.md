@@ -131,7 +131,7 @@ python3 build.py \
 
 - To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
 
-### 6. Database versions
+### 6. Version history 
 
 | Script | Version  | Date     | Sequences | Download |
 |----------|----------|----------|----------|----------|

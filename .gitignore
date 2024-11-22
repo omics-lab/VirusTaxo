@@ -1,5 +1,6 @@
 # Ignore files
 .DS_Store 
+*.Identifier
 
 # Ignore directory
 environment/

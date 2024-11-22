@@ -5,7 +5,7 @@
 library(tidyverse)
 
 
-meta = read.csv("./Dataset/sequences_20240122_8132761_with_version.csv")
+meta = read.csv("../Dataset/sequences_20240122_8132761_with_version.csv")
 head(meta)
 colnames(meta)
 
@@ -33,13 +33,13 @@ write.csv(dna_rna, "DNA_RNA_18451_meta.csv")
 write.csv(dna, "DNA_9384_meta.csv")
 write.csv(rna, "RNA_9067_meta.csv")
 
-# end
+# end of v1 data
 
 
+## v2: species, genus and family model
 
+# remove empty cells
+meta6 = meta3 %>% select("Accession", "Species", "Genus", "Family") 
+meta7 = meta6[rowSums(meta6 == "", na.rm = TRUE) == 0, ]
 
-  
-  
-  
-  
-  
+write.csv(meta7, "../Dataset/Accession_Species_Genus_Family_12612_meta.csv")
