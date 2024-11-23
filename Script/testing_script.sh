@@ -15,3 +15,7 @@ python v2_b.py \
 	 --seq ../temp/vt2_database/sequences_20240122_3701960.fasta \
 	 --k 20 \
 	 --saving_dir ../temp/vt2_database
+
+python3 v2_p.py \
+	--database_path ../temp/vt2_database/ \
+	--seq ./Dataset/asm_head.fasta 
