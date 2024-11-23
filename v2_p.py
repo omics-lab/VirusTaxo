@@ -35,7 +35,7 @@ def predict(fasta_file, database_path, output_csv="VirusTaxo_merged_predictions.
 
         # Count the number of sequences in the FASTA file
         num_sequences = sum(1 for _ in SeqIO.parse(fasta_file, "fasta"))
-        print(f"Total number of query sequences loaded = {num_sequences}")
+        print(f"Total number of query sequences loaded for {rank} prediction = {num_sequences}")
 
         # Open the CSV file for writing
         with open(output_file, 'w', newline='') as csvfile:
@@ -47,7 +47,7 @@ def predict(fasta_file, database_path, output_csv="VirusTaxo_merged_predictions.
             for key in model.keys():
                 k = len(key)
                 break
-            print(f"k-mer size = {k}")
+            print(f"k-mer size for {rank} prediction = {k}")
 
             # Process each record in the FASTA file with a progress bar
             with tqdm(total=num_sequences, desc=f"Processing query sequences for {rank}") as pbar:
@@ -86,17 +86,41 @@ def predict(fasta_file, database_path, output_csv="VirusTaxo_merged_predictions.
         else:
             merged_df = pd.merge(merged_df, df, on=["Accession", "Query_Seq_Length"], how="outer")
 
-    # Filter merged predictions to ensure valid taxonomic hierarchy
-    print("Filtering merged predictions based on valid taxonomic hierarchy...")
-    merged_df["Taxonomy_Tuple"] = merged_df[["Species", "Genus", "Family"]].apply(tuple, axis=1)
+    # Save merged predictions to CSV before filtering
+    merged_csv_file = os.path.join(temp_dir, "merged_predictions_before_filtering.csv")
+    merged_df.to_csv(merged_csv_file, index=False)
+    print(f"Merged predictions saved to {merged_csv_file} before filtering.")
+
+    # Validate and filter merged predictions based on taxonomic hierarchy
+    print("Validating and filtering merged predictions based on valid taxonomic hierarchy...")
+
+    # Function to check valid taxonomy for non-unclassified ranks
+    def is_valid_taxonomy(row):
+        species = row["Species"]
+        genus = row["Genus"]
+        family = row["Family"]
+        
+        # If 'Unclassified' is present in any rank, check the valid combinations for the remaining two ranks
+        if species == "Unclassified":
+            return (genus, family) in metadata_set
+        elif genus == "Unclassified":
+            return (species, family) in metadata_set
+        elif family == "Unclassified":
+            return (species, genus) in metadata_set
+        else:
+            return (species, genus, family) in metadata_set
+
+    # Apply the validation function
+    merged_df["Valid_Taxonomy"] = merged_df.apply(is_valid_taxonomy, axis=1)
+
     initial_row_count = len(merged_df)  # Count initial number of rows
-    filtered_df = merged_df[merged_df["Taxonomy_Tuple"].isin(metadata_set)].copy()  # Create a copy here
+    filtered_df = merged_df[merged_df["Valid_Taxonomy"]].copy()  # Only keep rows with valid taxonomy
     filtered_row_count = len(filtered_df)  # Count number of rows after filtering
     rows_filtered_out = initial_row_count - filtered_row_count
 
-    print(f"Rows filtered out: {rows_filtered_out}")
-    print(f"Rows remaining: {filtered_row_count}")
-    filtered_df.drop(columns=["Taxonomy_Tuple"], inplace=True)  # Drop the temporary column
+    print(f"Ambiguous predictions are filtered out: {rows_filtered_out}")
+    print(f"Successful predictions of query sequences: {filtered_row_count}")
+    filtered_df.drop(columns=["Valid_Taxonomy"], inplace=True)  # Drop the temporary column
 
     # Save the filtered merged CSV file
     filtered_df.to_csv(output_csv, index=False)

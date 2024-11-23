@@ -19,3 +19,7 @@ python v2_b.py \
 python3 v2_p.py \
 	--database_path ../temp/vt2_database/ \
 	--seq ./Dataset/asm_head.fasta 
+
+# check acc python at 5-fold 80% vs 20%
+
+# check with different kmers
