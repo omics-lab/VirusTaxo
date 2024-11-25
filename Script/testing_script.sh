@@ -23,3 +23,34 @@ python3 v2_p.py \
 # check acc python at 5-fold 80% vs 20%
 
 # check with different kmers
+
+
+#!/bin/bash
+
+## k-mer acc
+
+# cd /path/VirusTaxo/
+
+python split_fasta.py
+
+# train.fasta, test.fasta 
+
+for k in {15..17}
+do
+  echo "Current k-mer: $k";
+  
+  # Run the first Python script
+  python v2_b.py \
+    --meta ./temp/metadata.csv \
+    --seq ./temp/seq1k.fasta \
+    --k "$k" \
+    --saving_dir ./temp/k_mer_loop/
+
+  echo "Predicting with k-mer = $k";
+
+  # Run the second Python script
+  python3 v2_p.py \
+    --database_path ./temp/k_mer_loop/ \
+    --seq ./temp/seq100.fasta \
+    --output_csv ./temp/k_mer_loop/VirusTaxo_merged_predictions_kmer_"$k".csv
+done

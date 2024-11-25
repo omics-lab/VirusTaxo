@@ -95,36 +95,95 @@ def predict(fasta_file, database_path, output_csv="VirusTaxo_merged_predictions.
     print("Validating and filtering merged predictions based on valid taxonomic hierarchy...")
 
     # Function to check valid taxonomy for non-unclassified ranks
-    def is_valid_taxonomy(row):
+    # def is_valid_taxonomy(row, metadata_set):
+    #     species = row["Species"]
+    #     genus = row["Genus"]
+    #     family = row["Family"]
+
+    #     # Check if all three ranks exist in metadata
+    #     if (species, genus, family) in metadata_set:
+    #         return (species, genus, family)
+
+    #     # Check for valid pairs when one rank is 'Unclassified'
+    #     if species == "Unclassified" and (genus, family) in metadata_set:
+    #         return (species, genus, family)
+    #     if genus == "Unclassified" and (species, family) in metadata_set:
+    #         return (species, genus, family)
+    #     if family == "Unclassified" and (species, genus) in metadata_set:
+    #         return (species, genus, family)
+
+    #     # Additional checks for when two or three ranks are 'Unclassified'
+    #     if species == "Unclassified" and genus == "Unclassified" and family in metadata_set:
+    #         return (species, genus, family)
+    #     if genus == "Unclassified" and family == "Unclassified" and species in metadata_set:
+    #         return (species, genus, family)
+    #     if species == "Unclassified" and family == "Unclassified" and genus in metadata_set:
+    #         return (species, genus, family)
+
+    #     if species == "Unclassified" and genus == "Unclassified" and family == "Unclassified":
+    #         return (species, genus, family)
+
+    #     return None
+
+    def is_valid_taxonomy(row, metadata_set):
         species = row["Species"]
         genus = row["Genus"]
         family = row["Family"]
-        
-        # If 'Unclassified' is present in any rank, check the valid combinations for the remaining two ranks
-        if species == "Unclassified":
-            return (genus, family) in metadata_set
-        elif genus == "Unclassified":
-            return (species, family) in metadata_set
-        elif family == "Unclassified":
-            return (species, genus) in metadata_set
-        else:
-            return (species, genus, family) in metadata_set
 
-    # Apply the validation function
-    merged_df["Valid_Taxonomy"] = merged_df.apply(is_valid_taxonomy, axis=1)
+        print(f"Checking row: {species}, {genus}, {family}")
 
-    initial_row_count = len(merged_df)  # Count initial number of rows
-    filtered_df = merged_df[merged_df["Valid_Taxonomy"]].copy()  # Only keep rows with valid taxonomy
-    filtered_row_count = len(filtered_df)  # Count number of rows after filtering
-    rows_filtered_out = initial_row_count - filtered_row_count
+        # Check if all three ranks exist in metadata
+        if (species, genus, family) in metadata_set:
+            print(f"Found valid taxonomy: {species}, {genus}, {family}")
+            return (species, genus, family)
 
-    print(f"Ambiguous predictions are filtered out: {rows_filtered_out}")
-    print(f"Successful predictions of query sequences: {filtered_row_count}")
-    filtered_df.drop(columns=["Valid_Taxonomy"], inplace=True)  # Drop the temporary column
+        # Check for valid pairs when one rank is 'Unclassified'
+        if species == "Unclassified" and (genus, family) in metadata_set:
+            print(f"Found valid pair for species: {species}, {genus}, {family}")
+            return (species, genus, family)
+        if genus == "Unclassified" and (species, family) in metadata_set:
+            print(f"Found valid pair for genus: {species}, {genus}, {family}")
+            return (species, genus, family)
+        if family == "Unclassified" and (species, genus) in metadata_set:
+            print(f"Found valid pair for family: {species}, {genus}, {family}")
+            return (species, genus, family)
 
-    # Save the filtered merged CSV file
-    filtered_df.to_csv(output_csv, index=False)
-    print(f"Filtered and merged predictions saved to {output_csv}")
+        # Check if two ranks are 'Unclassified'
+        if species == "Unclassified" and genus == "Unclassified" and family in metadata_set:
+            print(f"Found valid pair for species/genus: {species}, {genus}, {family}")
+            return (species, genus, family)
+        if genus == "Unclassified" and family == "Unclassified" and species in metadata_set:
+            print(f"Found valid pair for genus/family: {species}, {genus}, {family}")
+            return (species, genus, family)
+        if species == "Unclassified" and family == "Unclassified" and genus in metadata_set:
+            print(f"Found valid pair for species/family: {species}, {genus}, {family}")
+            return (species, genus, family)
+
+        # Check if all three ranks are 'Unclassified'
+        if species == "Unclassified" and genus == "Unclassified" and family == "Unclassified":
+            print(f"All ranks are Unclassified: {species}, {genus}, {family}")
+            return (species, genus, family)
+
+        return None
+
+    merged_df["Valid_Taxonomy"] = merged_df.apply(lambda row: is_valid_taxonomy(row, metadata_set), axis=1)
+    merged_df.to_csv("output_with_valid_taxonomy.csv", index=False)
+
+    # # Apply the validation function
+    # merged_df["Valid_Taxonomy"] = merged_df.apply(lambda row: is_valid_taxonomy(row, metadata_set), axis=1)
+
+    # initial_row_count = len(merged_df)  # Count initial number of rows
+    # filtered_df = merged_df[merged_df["Valid_Taxonomy"]].copy()  # Only keep rows with valid taxonomy
+    # filtered_row_count = len(filtered_df)  # Count number of rows after filtering
+    # rows_filtered_out = initial_row_count - filtered_row_count
+
+    # print(f"Ambiguous predictions are filtered out: {rows_filtered_out}")
+    # print(f"Successful predictions of query sequences: {filtered_row_count}")
+    # filtered_df.drop(columns=["Valid_Taxonomy"], inplace=True)  # Drop the temporary column
+
+    # # Save the filtered merged CSV file
+    # filtered_df.to_csv(output_csv, index=False)
+    # print(f"Filtered and merged predictions saved to {output_csv}")
 
 
 if __name__ == '__main__':

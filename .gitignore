@@ -1,6 +1,9 @@
 # Ignore files
 .DS_Store 
 *.Identifier
+sequences.fasta  
+train.fasta
+test.fasta
 
 # Ignore directory
 environment/
@@ -11,3 +14,6 @@ model/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+temp/sequences.fasta
+temp/train.fasta
+.git/objects/pack/pack-5895ec73deb6db0e8fb86bff32b727b488f123b5.pack
