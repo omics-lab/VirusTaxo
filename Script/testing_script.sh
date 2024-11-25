@@ -54,3 +54,27 @@ do
     --seq ./temp/seq100.fasta \
     --output_csv ./temp/k_mer_loop/VirusTaxo_merged_predictions_kmer_"$k".csv
 done
+
+output recieved
+
+"Entropy,Species,Genus,Family,Valid_Taxonomy
+2,a,b,c,"('a', 'b', 'c')"
+3,Unclassified,b,c,
+4,a,Unclassified,c,
+5,a,b,Unclassified,
+6,Unclassified,Unclassified,Unclassified,"('Unclassified', 'Unclassified', 'Unclassified')"
+7,d,b,c,
+8,d,Unclassified,c,
+9,a,b,e,"
+
+output expected
+
+"Entropy,Species,Genus,Family,Valid_Taxonomy
+2,a,b,c,"('a', 'b', 'c')"
+3,Unclassified,b,c,"('Unclassified', 'b', 'c')"
+4,a,Unclassified,c,"('a', 'Unclassified', 'c')"
+5,a,b,Unclassified,"('a','b', 'Unclassified')"
+6,Unclassified,Unclassified,Unclassified,"('Unclassified', 'Unclassified', 'Unclassified')"
+7,d,b,c,"('Wrong classification')"
+8,d,Unclassified,c,"('Wrong classification')"
+9,a,b,e,"('Wrong classification')"

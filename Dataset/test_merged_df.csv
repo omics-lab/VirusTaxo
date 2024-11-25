@@ -1,0 +1,9 @@
+Entropy,Species,Genus,Family
+2,a,b,c
+3,Unclassified,b,c
+4,a,Unclassified,c
+5,a,b,Unclassified
+6,Unclassified,Unclassified,Unclassified
+7,d,b,c
+8,d,Unclassified,c
+9,a,b,e

@@ -1,0 +1,9 @@
+Entropy,Species,Genus,Family,Valid_Taxonomy
+2,a,b,c,"('a', 'b', 'c')"
+3,Unclassified,b,c,('Wrong classification')
+4,a,Unclassified,c,('Wrong classification')
+5,a,b,Unclassified,('Wrong classification')
+6,Unclassified,Unclassified,Unclassified,"('Unclassified', 'Unclassified', 'Unclassified')"
+7,d,b,c,('Wrong classification')
+8,d,Unclassified,c,('Wrong classification')
+9,a,b,e,('Wrong classification')
