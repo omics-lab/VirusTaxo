@@ -55,26 +55,46 @@ do
     --output_csv ./temp/k_mer_loop/VirusTaxo_merged_predictions_kmer_"$k".csv
 done
 
-output recieved
+# task: write python script
+I have two inputs:
 
-"Entropy,Species,Genus,Family,Valid_Taxonomy
-2,a,b,c,"('a', 'b', 'c')"
-3,Unclassified,b,c,
-4,a,Unclassified,c,
-5,a,b,Unclassified,
-6,Unclassified,Unclassified,Unclassified,"('Unclassified', 'Unclassified', 'Unclassified')"
-7,d,b,c,
-8,d,Unclassified,c,
-9,a,b,e,"
+test_metadata.csv
 
-output expected
+"Accession,Species,Genus,Family
+x1,a,b,c
+x2,d,e,f"
 
-"Entropy,Species,Genus,Family,Valid_Taxonomy
-2,a,b,c,"('a', 'b', 'c')"
-3,Unclassified,b,c,"('Unclassified', 'b', 'c')"
-4,a,Unclassified,c,"('a', 'Unclassified', 'c')"
-5,a,b,Unclassified,"('a','b', 'Unclassified')"
-6,Unclassified,Unclassified,Unclassified,"('Unclassified', 'Unclassified', 'Unclassified')"
-7,d,b,c,"('Wrong classification')"
-8,d,Unclassified,c,"('Wrong classification')"
-9,a,b,e,"('Wrong classification')"
+test_merged_df.csv
+
+"Entropy,Species,Genus,Family
+2,a,b,c
+3,Unclassified,b,c
+4,a,Unclassified,c
+5,a,b,Unclassified
+6,Unclassified,Unclassified,Unclassified
+7,d,b,c
+8,d,Unclassified,c
+9,a,b,e"
+
+step-1: load input files from thsoe paths
+
+metadata_file = os.path.join("../Dataset/", "test_metadata.csv")
+metadata = pd.read_csv(metadata_file)
+metadata = metadata[["Species", "Genus", "Family"]]
+
+merged_df_file = os.path.join("../Dataset/", "test_merged_df.csv")
+merged_df = pd.read_csv(merged_df_file)
+
+Step-2: take the three columns Species,Genus,Family from test_metadata.csv and create set for each row of metadata - such (a,b,c) and (d,e,f)
+
+Step-3: similarly take the three columns Species,Genus,Family from test_merged_df.csv and make set for each row for merged_df such (a,b,c) and (Unclassified,b,c)
+
+Step-4: write a new column on test_merged_df.csv named "Valid" and write "Yes" or "No":
+
+write "Yes", if
+- merged_df's (Species,Genus,Family) set intersect with metadata's (Species,Genus,Family) set  
+- merged_df contains "Unclassified" in one of the (Species,Genus,Family) set and rest of the two elements intersect with metadata's (Species,Genus,Family) set 
+- merged_df contains "Unclassified" in two of the (Species,Genus,Family) set  
+- merged_df contains three "Unclassified" in (Species,Genus,Family) set  
+- otherwise, print "No"
+
