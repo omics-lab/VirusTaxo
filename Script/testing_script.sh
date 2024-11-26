@@ -117,12 +117,12 @@ cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/t
 cat VirusTaxo_predictions_*.csv | grep -v Yes | wc 
 
 # count not unclassified
-for file in VirusTaxo_predictions_*.csv;
-do echo $file;
-	for f in 3 6 9; 
-	do echo "rank:$f:";
-		less $file | awk -v col=$f -F, '{print $col}' | grep -v Uncl | wc -l;
-	done   
+for file in VirusTaxo_predictions_*.csv; do
+    echo $file
+    for f in 3 6 9; do
+        echo "rank: $f:"
+        less $file | awk -v col=$f -F, '{print $col}' | grep -v Uncl | wc -l
+    done
 done | paste - - - - - - - 
 
 
