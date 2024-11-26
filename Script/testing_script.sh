@@ -35,7 +35,7 @@ python split_fasta.py
 
 # train.fasta, test.fasta 
 
-for k in {15..17}
+for k in {15..16}
 do
   echo "Current k-mer: $k";
   
@@ -44,57 +44,108 @@ do
     --meta ./temp/metadata.csv \
     --seq ./temp/seq1k.fasta \
     --k "$k" \
-    --saving_dir ./temp/k_mer_loop/
+    --saving_dir ./temp/k_mer_loop/;
 
-  echo "Predicting with k-mer = $k";
+	echo "Predicting with k-mer = $k";
 
   # Run the second Python script
   python3 v2_p.py \
     --database_path ./temp/k_mer_loop/ \
     --seq ./temp/seq100.fasta \
-    --output_csv ./temp/k_mer_loop/VirusTaxo_merged_predictions_kmer_"$k".csv
+    --output_csv ./temp/k_mer_loop/VirusTaxo_predictions_"$k".csv;
 done
 
-# task: write python script
-I have two inputs:
+# in server 
+cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/
+#scp -r /home/rashedul/project/VirusTaxo/ rislam@gphost03.bcgsc.ca:/projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/
 
-test_metadata.csv
+source activate py310
+python -m venv environment
+source ./environment/bin/activate
+pip install -r requirements.txt
 
-"Accession,Species,Genus,Family
-x1,a,b,c
-x2,d,e,f"
+# 80% 20%
+python split_fasta.py
 
-test_merged_df.csv
+# train.fasta, test.fasta 
 
-"Entropy,Species,Genus,Family
-2,a,b,c
-3,Unclassified,b,c
-4,a,Unclassified,c
-5,a,b,Unclassified
-6,Unclassified,Unclassified,Unclassified
-7,d,b,c
-8,d,Unclassified,c
-9,a,b,e"
+for k in {15..25}
+do
+  echo "Current k-mer: $k";
+  
+  # Run the first Python script
+  python v2_b.py \
+    --meta ./temp/metadata.csv \
+    --seq ./temp/train.fasta \
+    --k "$k" \
+    --saving_dir ./temp/k_mer_loop/;
 
-step-1: load input files from thsoe paths
+	echo "Predicting with k-mer = $k";
 
-metadata_file = os.path.join("../Dataset/", "test_metadata.csv")
-metadata = pd.read_csv(metadata_file)
-metadata = metadata[["Species", "Genus", "Family"]]
+  # Run the second Python script
+  python3 v2_p.py \
+    --database_path ./temp/k_mer_loop/ \
+    --seq ./temp/test.fasta \
+    --output_csv ./temp/k_mer_loop/VirusTaxo_predictions_"$k".csv;
+done >vt_kmers.log
 
-merged_df_file = os.path.join("../Dataset/", "test_merged_df.csv")
-merged_df = pd.read_csv(merged_df_file)
+# 5-fold cross validation
 
-Step-2: take the three columns Species,Genus,Family from test_metadata.csv and create set for each row of metadata - such (a,b,c) and (d,e,f)
+for k in {1..5}
+do
+	echo $k;
+	python split_fasta.py;
 
-Step-3: similarly take the three columns Species,Genus,Family from test_merged_df.csv and make set for each row for merged_df such (a,b,c) and (Unclassified,b,c)
+  # Run the first Python script
+  python v2_b.py \
+    --meta ./temp/metadata.csv \
+    --seq ./temp/train.fasta \
+    --k 20 \
+    --saving_dir ./temp/cv/;
 
-Step-4: write a new column on test_merged_df.csv named "Valid" and write "Yes" or "No":
+  # Run the second Python script
+  python3 v2_p.py \
+    --database_path ./temp/cv/ \
+    --seq ./temp/test.fasta \
+    --output_csv ./temp/k_mer_loop/VirusTaxo_predictions_fold_"$k".csv;
+done >vt_5cv.log
 
-write "Yes", if
-- merged_df's (Species,Genus,Family) set intersect with metadata's (Species,Genus,Family) set  
-- merged_df contains "Unclassified" in one of the (Species,Genus,Family) set and rest of the two elements intersect with metadata's (Species,Genus,Family) set 
-- merged_df contains "Unclassified" in two of the (Species,Genus,Family) set  
-- merged_df contains three "Unclassified" in (Species,Genus,Family) set  
-- otherwise, print "No"
+# acc testing
+cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
 
+# invalid 
+cat VirusTaxo_predictions_*.csv | grep -v Yes | wc 
+
+# count not unclassified
+for file in VirusTaxo_predictions_*.csv;
+do 
+	echo $file
+	for f in 3 6 9; 
+	do 
+	    echo "rank:$f:";
+	    less $file | awk -v col=$f -F, '{print $col}' | grep -v Uncl | wc -l;
+	done   
+done | paste - - - - - - - 
+
+
+# acc test
+cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
+
+for f in VirusTaxo_predictions_*.csv;
+do 
+	echo $f;
+	less $f | awk -F, '{print $1"_"$3}' | sort >temp1
+	a=$(less temp1 | grep -v Uncl | wc -l);
+	echo $a;
+	less ../metadata.csv | tr -d '"' | awk -F, '{print $2"_"$5}' | sort >temp2
+	b=$(grep -f temp1 temp2 | wc -l);
+	echo $b;
+	acc=$((b / a));
+	echo $acc;
+done | paste - - - - 
+
+
+# at 3-fold cross validation, optimum k-mer was 20 and sequences classified correctly within the threshold
+				# Family 	Genus 	Species
+# Classified    %			%			%
+# Unclassified 	%			%			%

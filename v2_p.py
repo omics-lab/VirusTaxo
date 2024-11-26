@@ -8,18 +8,12 @@ import os
 import argparse
 
 
-def predict(fasta_file, database_path, output_csv="VirusTaxo_merged_predictions.csv", custom_E=0.5, custom_es=0.8):
+def predict(fasta_file, database_path, output_csv, custom_E=0.5, custom_es=0.8):
     # Define rank names and initialize list to store output file paths
-    ranks = ["Species", "Genus", "Family"]
+    ranks = ["Family", "Genus", "Species"]
     temp_dir = "./temp/"
     os.makedirs(temp_dir, exist_ok=True)
     output_files = []
-
-    # Load metadata
-    metadata_file = os.path.join(database_path, "metadata.csv")
-    metadata = pd.read_csv(metadata_file)
-    metadata = metadata[["Species", "Genus", "Family"]]  # Ensure only relevant columns
-    metadata_set = set(metadata.apply(tuple, axis=1))  # Create a set of valid (Species, Genus, Family) combinations
 
     for rank in ranks:
         model_file = os.path.join(database_path, f"{rank}_database.pkl")
@@ -94,109 +88,62 @@ def predict(fasta_file, database_path, output_csv="VirusTaxo_merged_predictions.
     # Validate and filter merged predictions based on taxonomic hierarchy
     print("Validating and filtering merged predictions based on valid taxonomic hierarchy...")
 
-    # Function to check valid taxonomy for non-unclassified ranks
-    # def is_valid_taxonomy(row, metadata_set):
-    #     species = row["Species"]
-    #     genus = row["Genus"]
-    #     family = row["Family"]
+    # Step 1: Load input files
+    # Load metadata
+    metadata_file = os.path.join(database_path, "metadata.csv")
+    metadata = pd.read_csv(metadata_file)
+    metadata = metadata[["Family", "Genus", "Species"]]
 
-    #     # Check if all three ranks exist in metadata
-    #     if (species, genus, family) in metadata_set:
-    #         return (species, genus, family)
+    # Step 2: Create sets for each row of metadata
+    metadata_sets = metadata.apply(lambda row: set(row), axis=1).tolist()
 
-    #     # Check for valid pairs when one rank is 'Unclassified'
-    #     if species == "Unclassified" and (genus, family) in metadata_set:
-    #         return (species, genus, family)
-    #     if genus == "Unclassified" and (species, family) in metadata_set:
-    #         return (species, genus, family)
-    #     if family == "Unclassified" and (species, genus) in metadata_set:
-    #         return (species, genus, family)
+    # Step 3: Create sets for each row of merged_df
+    merged_df['RowSet'] = merged_df[["Family", "Genus", "Species"]].apply(lambda row: set(row), axis=1)
 
-    #     # Additional checks for when two or three ranks are 'Unclassified'
-    #     if species == "Unclassified" and genus == "Unclassified" and family in metadata_set:
-    #         return (species, genus, family)
-    #     if genus == "Unclassified" and family == "Unclassified" and species in metadata_set:
-    #         return (species, genus, family)
-    #     if species == "Unclassified" and family == "Unclassified" and genus in metadata_set:
-    #         return (species, genus, family)
+    # Step 4: Define a function to determine validity strictly per row
+    def is_valid(row_set):
+        for metadata_set in metadata_sets:
+            unclassified_count = list(row_set).count("Unclassified")
+            # Check if the row matches a metadata row or partially matches based on conditions
+            if unclassified_count == 3:  # All are "Unclassified"
+                return "Yes"
+            elif unclassified_count == 2:  # Two are "Unclassified"
+                return "Yes"
+            elif unclassified_count == 1:  # One is "Unclassified"
+                classified_elements = row_set - {"Unclassified"}
+                if classified_elements.issubset(metadata_set):
+                    return "Yes"
+            elif row_set == metadata_set:  # Exact match
+                return "Yes"
+        return "No"
 
-    #     if species == "Unclassified" and genus == "Unclassified" and family == "Unclassified":
-    #         return (species, genus, family)
+    # Apply validity function to merged_df
+    merged_df['Valid'] = merged_df['RowSet'].apply(is_valid)
 
-    #     return None
+    yes_count = (merged_df['Valid'] == "Yes").sum()
+    no_count = (merged_df['Valid'] == "No").sum()
 
-    def is_valid_taxonomy(row, metadata_set):
-        species = row["Species"]
-        genus = row["Genus"]
-        family = row["Family"]
+    print(f"Number of rows with valid taxonomy: {yes_count}")
+    print(f"Number of rows with invalid taxonomy: {no_count}")
 
-        print(f"Checking row: {species}, {genus}, {family}")
+    # Drop the temporary 'RowSet' column and save the output
+    merged_df.drop(columns=['RowSet'], inplace=True)
+    merged_df.to_csv(output_csv, index=False)
 
-        # Check if all three ranks exist in metadata
-        if (species, genus, family) in metadata_set:
-            print(f"Found valid taxonomy: {species}, {genus}, {family}")
-            return (species, genus, family)
-
-        # Check for valid pairs when one rank is 'Unclassified'
-        if species == "Unclassified" and (genus, family) in metadata_set:
-            print(f"Found valid pair for species: {species}, {genus}, {family}")
-            return (species, genus, family)
-        if genus == "Unclassified" and (species, family) in metadata_set:
-            print(f"Found valid pair for genus: {species}, {genus}, {family}")
-            return (species, genus, family)
-        if family == "Unclassified" and (species, genus) in metadata_set:
-            print(f"Found valid pair for family: {species}, {genus}, {family}")
-            return (species, genus, family)
-
-        # Check if two ranks are 'Unclassified'
-        if species == "Unclassified" and genus == "Unclassified" and family in metadata_set:
-            print(f"Found valid pair for species/genus: {species}, {genus}, {family}")
-            return (species, genus, family)
-        if genus == "Unclassified" and family == "Unclassified" and species in metadata_set:
-            print(f"Found valid pair for genus/family: {species}, {genus}, {family}")
-            return (species, genus, family)
-        if species == "Unclassified" and family == "Unclassified" and genus in metadata_set:
-            print(f"Found valid pair for species/family: {species}, {genus}, {family}")
-            return (species, genus, family)
-
-        # Check if all three ranks are 'Unclassified'
-        if species == "Unclassified" and genus == "Unclassified" and family == "Unclassified":
-            print(f"All ranks are Unclassified: {species}, {genus}, {family}")
-            return (species, genus, family)
-
-        return None
-
-    merged_df["Valid_Taxonomy"] = merged_df.apply(lambda row: is_valid_taxonomy(row, metadata_set), axis=1)
-    merged_df.to_csv("output_with_valid_taxonomy.csv", index=False)
-
-    # # Apply the validation function
-    # merged_df["Valid_Taxonomy"] = merged_df.apply(lambda row: is_valid_taxonomy(row, metadata_set), axis=1)
-
-    # initial_row_count = len(merged_df)  # Count initial number of rows
-    # filtered_df = merged_df[merged_df["Valid_Taxonomy"]].copy()  # Only keep rows with valid taxonomy
-    # filtered_row_count = len(filtered_df)  # Count number of rows after filtering
-    # rows_filtered_out = initial_row_count - filtered_row_count
-
-    # print(f"Ambiguous predictions are filtered out: {rows_filtered_out}")
-    # print(f"Successful predictions of query sequences: {filtered_row_count}")
-    # filtered_df.drop(columns=["Valid_Taxonomy"], inplace=True)  # Drop the temporary column
-
-    # # Save the filtered merged CSV file
-    # filtered_df.to_csv(output_csv, index=False)
-    # print(f"Filtered and merged predictions saved to {output_csv}")
+    print(f"Updated file saved to: {output_csv}")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--database_path', required=True,
-                        help='Absolute or relative path containing model files (e.g., Species_database.pkl, Genus_database.pkl, Family_database.pkl)')
+                        help='Absolute or relative path containing three model files (Family_database.pkl, Genus_database.pkl and Species_database.pkl)')
 
     parser.add_argument('--seq', required=True,
                         help='Absolute or relative path of fasta sequence file')
 
     parser.add_argument('--output_csv', required=False, default="VirusTaxo_merged_predictions.csv",
-                        help='Path to save the merged output CSV file (default: VirusTaxo_merged_predictions.csv)')
+                        help='Path to save the merged output CSV file (default: VirusTaxo_predictions.csv)')
 
     parser.add_argument('--custom_E', required=False, default=0.5, type=float,
                         help='Custom entropy threshold (default: 0.5)')
