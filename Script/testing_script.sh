@@ -141,7 +141,8 @@ do
 	b=$(grep -f temp1 temp2 | wc -l);
 	echo $b;
 	acc=$((b / a));
-	echo $acc;
+	echo "accuracy:" $acc;
+	rm temp1 temp2 
 done | paste - - - - 
 
 
