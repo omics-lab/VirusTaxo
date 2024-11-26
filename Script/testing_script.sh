@@ -69,7 +69,7 @@ python split_fasta.py
 
 # train.fasta, test.fasta 
 
-for k in {15..25}
+for k in {18..22}
 do
   echo "Current k-mer: $k";
   
@@ -87,7 +87,7 @@ do
     --database_path ./temp/k_mer_loop/ \
     --seq ./temp/test.fasta \
     --output_csv ./temp/k_mer_loop/VirusTaxo_predictions_"$k".csv;
-done >vt_kmers.log
+done >vt_kmers_.5.05.log
 
 # 5-fold cross validation
 
@@ -118,12 +118,10 @@ cat VirusTaxo_predictions_*.csv | grep -v Yes | wc
 
 # count not unclassified
 for file in VirusTaxo_predictions_*.csv;
-do 
-	echo $file
+do echo $file;
 	for f in 3 6 9; 
-	do 
-	    echo "rank:$f:";
-	    less $file | awk -v col=$f -F, '{print $col}' | grep -v Uncl | wc -l;
+	do echo "rank:$f:";
+		less $file | awk -v col=$f -F, '{print $col}' | grep -v Uncl | wc -l;
 	done   
 done | paste - - - - - - - 
 
@@ -131,6 +129,7 @@ done | paste - - - - - - -
 # acc test
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
 
+# fam acc
 for f in VirusTaxo_predictions_*.csv;
 do 
 	echo $f;
@@ -140,7 +139,37 @@ do
 	less ../metadata.csv | tr -d '"' | awk -F, '{print $2"_"$5}' | sort >temp2
 	b=$(grep -f temp1 temp2 | wc -l);
 	echo $b;
-	acc=$((b / a));
+	acc=$(awk "BEGIN {print $b / $a}");
+	echo "accuracy:" $acc;
+	rm temp1 temp2 
+done | paste - - - - 
+
+# gen acc
+for f in VirusTaxo_predictions_*.csv;
+do 
+	echo $f;
+	less $f | awk -F, '{print $1"_"$6}' | sort >temp1
+	a=$(less temp1 | grep -v Uncl | wc -l);
+	echo $a;
+	less ../metadata.csv | tr -d '"' | awk -F, '{print $2"_"$4}' | sort >temp2
+	b=$(grep -f temp1 temp2 | wc -l);
+	echo $b;
+	acc=$(awk "BEGIN {print $b / $a}");
+	echo "accuracy:" $acc;
+	rm temp1 temp2 
+done | paste - - - - 
+
+# spp acc
+for f in VirusTaxo_predictions_*.csv;
+do 
+	echo $f;
+	less $f | awk -F, '{print $1"_"$9}' | sort >temp1
+	a=$(less temp1 | grep -v Uncl | wc -l);
+	echo $a;
+	less ../metadata.csv | tr -d '"' | awk -F, '{print $2"_"$3}' | sort >temp2
+	b=$(grep -f temp1 temp2 | wc -l);
+	echo $b;
+	acc=$(awk "BEGIN {print $b / $a}");
 	echo "accuracy:" $acc;
 	rm temp1 temp2 
 done | paste - - - - 
