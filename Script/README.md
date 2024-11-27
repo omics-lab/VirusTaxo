@@ -108,7 +108,7 @@ QuerySeq-4      1330    Lentivirus      0.000   0.987
 To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-validation, 80% of the sequences were randomly chosen to create the database, and the other 20% were used to calculate the accuracy shown in the table below:
 
 | Class | Family | Genus |  Species | 
-|----------|----------|----------| 
+|----------|----------|----------|----------|  
 | Accurate prediction  | 97%  | 97%   | 87%   | 
 | Wrong prediction  | 3%  | 3% | 13% | 
 | Unclassified  | 45%  | 45%  | 55%  | 
