@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 ### 2. Predict virus taxonomy using prebuilt database
 
-#### Step-1: Download the [latest]() prebuilt databse of VirusTaxo. 
+#### Step-1: Download the [latest]() prebuilt databse of VirusTaxo 
 
 ```
 gdown "https://drive.google.com/uc?id=1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs"
@@ -47,14 +47,14 @@ tar -xvzf vt_db_jan21_2024.tar.gz
 | sequences.fasta  | 12613 | Complete genome sequences used to build database |
 | metadata.csv  | 12613 | Metadata associated with the dataset used to build database |
 
-#### Step-2: Assemble the metagenomic contigs from your metavirome or metagenomic library. 
+#### Step-2: Assemble the metagenomic contigs from your metavirome or metagenomic library 
    - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
 
 ```
 megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
 ```
 
-#### Step-3: Predict taxonomy using `predict.py`:
+#### Step-3: Predict taxonomy using `predict.py`
 
 - Usage
 
@@ -107,14 +107,14 @@ QuerySeq-4      1330    Lentivirus      0.000   0.987
 ### 4. Prediction accurary of VirusTaxo
 To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-validation, 80% of the sequences were randomly chosen to create the database, and the other 20% were used to calculate the accuracy shown in the table below:
 
-| Class | Family | Genus |  Species |
-|----------|----------|----------|
-| Accurate prediction  | 97%  | 97%   | 87%   |
-| Wrong prediction  | 3%  | 3% | 13% |
-| Unclassified  | 45%  | 45%  | 55%  |
-| k-mer size (bp) | 15 | 15 | 20 |
-| Enrichment cutoff  | >=0.05 | >=0.05 | >=0.80
-| Entropy cutoff  | <=0.50 | <=0.50 | <=0.50
+| Class | Family | Genus |  Species | 
+|----------|----------|----------| 
+| Accurate prediction  | 97%  | 97%   | 87%   | 
+| Wrong prediction  | 3%  | 3% | 13% | 
+| Unclassified  | 45%  | 45%  | 55%  | 
+| k-mer size (bp) | 15 | 15 | 20 | 
+| Enrichment cutoff  | >=0.05 | >=0.05 | >=0.80 | 
+| Entropy cutoff  | <=0.50 | <=0.50 | <=0.50 | 
 
 ### 5. Build your custom database
 
