@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 ### 2. Predict virus taxonomy using prebuilt database
 
-- Download the latest prebuilt databse of VirusTaxo. 
+- Step-1: Download the [latest]() prebuilt databse of VirusTaxo. 
 
 ```
 gdown "https://drive.google.com/uc?id=1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs"
@@ -37,24 +37,24 @@ gdown "https://drive.google.com/uc?id=1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs"
 tar -xvzf vt_db_jan21_2024.tar.gz
 ```
 
-- Database files and usage:
+    -  Database files:
 
-| db file | Count | Usage |
-|----------|----------|----------|
-| Family_database.pkl  | n Family  | k-mer database for Family level prediction   |
-| Genus_database.pkl  | n Genus  | k-mer database for Genus level prediction   |
-| Species_database.pkl  | n Species  | k-mer database for Species level prediction   |
-| sequences.fasta  | 12613 | Complete genome sequences used to build database |
-| metadata.csv  | 12613 | Metadata associated with the dataset used to build database |
+    | Database file | Count | Description |
+    |----------|----------|----------|
+    | Family_database.pkl  | n Family  | k-mer database for Family level prediction   |
+    | Genus_database.pkl  | n Genus  | k-mer database for Genus level prediction   |
+    | Species_database.pkl  | n Species  | k-mer database for Species level prediction   |
+    | sequences.fasta  | 12613 | Complete genome sequences used to build database |
+    | metadata.csv  | 12613 | Metadata associated with the dataset used to build database |
 
-- Assemble the metagenomic contigs from your metavirome or metagenomic library. 
+- Step-2: Assemble the metagenomic contigs from your metavirome or metagenomic library. 
    - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
 
    ```
    megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
    ```
 
-- Usage of `predict.py`:
+- Step-3: Predict taxonomy using `predict.py`:
 
 ```
 python3 predict.py -h
@@ -73,7 +73,7 @@ options:
                         Enrichment score threshold for classification (default: 0.8)
 ```
 
-- Run with the sample [contig.fasta](./Dataset/contig.fasta) file
+    - Run with the sample [contig.fasta](./Dataset/contig.fasta) file
 
 ```
 python3 predict.py \
@@ -81,7 +81,9 @@ python3 predict.py \
    --seq ./Dataset/contig.fasta # query fasta file 
 ```
 
-- Example output for 4 query sequences
+### 3. Interpretation of output
+
+- Example output 
 
 ```
 Id              Length  Genus           Entropy Enrichment_Score
@@ -91,7 +93,6 @@ QuerySeq-3      1540    Unknown         0.285   0.820
 QuerySeq-4      1330    Lentivirus      0.000   0.987
 ```
 
-### 3. Interpretation of output
 - In the taxonomic rank column 
    - `NoHit`: no k-mer overlap between the query and database.
    - `Unknown`: genus name is not assigned in the [ICTV classification](https://ictv.global/). 
