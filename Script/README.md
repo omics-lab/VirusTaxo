@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 ### 2. Predict virus taxonomy using prebuilt database
 
-- Step-1: Download the [latest]() prebuilt databse of VirusTaxo. 
+#### Step-1: Download the [latest]() prebuilt databse of VirusTaxo. 
 
 ```
 gdown "https://drive.google.com/uc?id=1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs"
@@ -37,24 +37,26 @@ gdown "https://drive.google.com/uc?id=1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs"
 tar -xvzf vt_db_jan21_2024.tar.gz
 ```
 
-    -  Database files:
+-  Database files:
 
-    | Database file | Count | Description |
-    |----------|----------|----------|
-    | Family_database.pkl  | n Family  | k-mer database for Family level prediction   |
-    | Genus_database.pkl  | n Genus  | k-mer database for Genus level prediction   |
-    | Species_database.pkl  | n Species  | k-mer database for Species level prediction   |
-    | sequences.fasta  | 12613 | Complete genome sequences used to build database |
-    | metadata.csv  | 12613 | Metadata associated with the dataset used to build database |
+| Database file | Count | Description |
+|----------|----------|----------|
+| Family_database.pkl  | n Family  | k-mer database for Family level prediction   |
+| Genus_database.pkl  | n Genus  | k-mer database for Genus level prediction   |
+| Species_database.pkl  | n Species  | k-mer database for Species level prediction   |
+| sequences.fasta  | 12613 | Complete genome sequences used to build database |
+| metadata.csv  | 12613 | Metadata associated with the dataset used to build database |
 
-- Step-2: Assemble the metagenomic contigs from your metavirome or metagenomic library. 
+#### Step-2: Assemble the metagenomic contigs from your metavirome or metagenomic library. 
    - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
 
-   ```
-   megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
-   ```
+```
+megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
+```
 
-- Step-3: Predict taxonomy using `predict.py`:
+#### Step-3: Predict taxonomy using `predict.py`:
+
+- Usage
 
 ```
 python3 predict.py -h
@@ -73,7 +75,7 @@ options:
                         Enrichment score threshold for classification (default: 0.8)
 ```
 
-    - Run with the sample [contig.fasta](./Dataset/contig.fasta) file
+- Run with the sample [contig.fasta](./Dataset/contig.fasta) file
 
 ```
 python3 predict.py \
