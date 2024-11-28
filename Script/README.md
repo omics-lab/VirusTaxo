@@ -76,7 +76,7 @@ options:
                         Enrichment score threshold for classification (default: 0.8)
 ```
 
-- Run with the sample [contig.fasta](./Dataset/test.fasta) file
+- Run with an example [fasta](./Dataset/test.fasta) file
 
 ```
 python3 predict.py \
