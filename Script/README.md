@@ -141,8 +141,8 @@ python3 build.py \
   
    - `meta`: Absolute or relative path of metadata file.
    - `seq`: Absolute or relative path of fasta sequence file.
-   - `k` : It denotes the length of k-mer.
-   - `saving_path`: Path to save a pickle file (A database File).
+   - `k` : The length of k-mer.
+   - `saving_path`: Path to save database pickle files for Family, Genus and Species.
 
 
 ### 6. Method limitation and interpretation
