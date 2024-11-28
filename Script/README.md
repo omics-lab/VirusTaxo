@@ -88,16 +88,16 @@ python3 predict.py \
 - Example output 
 
 ```
-Accession    Query Seq Length  Family           Family Entropy  Family Enrichment  Genus           Genus Entropy  Genus Enrichment  Species                   Species Entropy  Species Enrichment  Valid
-AC 000001.1  33034             Adenoviridae     0.0             0.786              Mastadenovirus  0.0            0.782             Ovine mastadenovirus A    0.0              0.745               Yes
-AC 000002.1  34446             Adenoviridae     0.0             0.845              Mastadenovirus  0.0            0.842             Bovine mastadenovirus B   0.0              0.811               Yes
-AC 000011.1  36519             Adenoviridae     -0.0            0.57               Mastadenovirus  -0.0           0.563             Human mastadenovirus E    -0.0             0.353               Yes
-AC 000189.1  34094             Adenoviridae     -0.0            0.81               Mastadenovirus  -0.0           0.803             Porcine mastadenovirus A  -0.0             0.742               Yes
-NC 000852.5  330611            Phycodnaviridae  -0.0            0.121              Chlorovirus     -0.0           0.115             Unclassified              -0.0             0.014               Yes
-NC 000855.1  11158             Unclassified     0.0             0.011              Unclassified    0.0            0.006             Unclassified              0.09             0.002               Yes
-NC 000867.1  10079             Unclassified     -0.0            0.018              Unclassified    -0.0           0.01              Unclassified              0.089            0.002               Yes
-NC 000899.1  45063             Adenoviridae     0.0             0.85               Aviadenovirus   0.0            0.844             Fowl aviadenovirus D      0.0              0.772               Yes
-NC 000939.2  4415              Tombusviridae    -0.0            0.061              Aureusvirus     -0.0           0.055             Aureusvirus dioscoreae    -0.0             0.053               Yes
+Accession    Query_Seq_Length  Family           Family_Entropy  Family_Enrichment  Genus           Genus_Entropy  Genus_Enrichment  Species                   Species_Entropy  Species_Enrichment  Valid
+AC_000001.1  33034             Adenoviridae     0.0             0.786              Mastadenovirus  0.0            0.782             Ovine mastadenovirus A    0.0              0.745               Yes
+AC_000002.1  34446             Adenoviridae     0.0             0.845              Mastadenovirus  0.0            0.842             Bovine mastadenovirus B   0.0              0.811               Yes
+AC_000011.1  36519             Adenoviridae     -0.0            0.57               Mastadenovirus  -0.0           0.563             Human mastadenovirus E    -0.0             0.353               Yes
+AC_000189.1  34094             Adenoviridae     -0.0            0.81               Mastadenovirus  -0.0           0.803             Porcine mastadenovirus A  -0.0             0.742               Yes
+NC_000852.5  330611            Phycodnaviridae  -0.0            0.121              Chlorovirus     -0.0           0.115             Unclassified              -0.0             0.014               Yes
+NC_000855.1  11158             Unclassified     0.0             0.011              Unclassified    0.0            0.006             Unclassified              0.09             0.002               Yes
+NC_000867.1  10079             Unclassified     -0.0            0.018              Unclassified    -0.0           0.01              Unclassified              0.089            0.002               Yes
+NC_000899.1  45063             Adenoviridae     0.0             0.85               Aviadenovirus   0.0            0.844             Fowl aviadenovirus D      0.0              0.772               Yes
+NC_000939.2  4415              Tombusviridae    -0.0            0.061              Aureusvirus     -0.0           0.055             Aureusvirus dioscoreae    -0.0             0.053               Yes
 ```
 
 - In the taxonomic rank column 
@@ -108,7 +108,7 @@ NC 000939.2  4415              Tombusviridae    -0.0            0.061           
 
    - Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
 
-   - `Valid` column is `Yes` if the prediction follows known taxonomic ranks, otherwise `No`. 
+   - The `Valid` column indicates `Yes` if the prediction aligns with known taxonomic ranks; otherwise, it shows `No`. Rarely prediction could result into exceptions to known taxonomic ranks. It is generally recommended to exclude rows marked as `No` unless you have verified the taxonomic assignment and are confident in its accuracy.
 
 ### 4. Prediction accurary of VirusTaxo
 To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-validation, 80% of the sequences were randomly chosen to create the database, and the other 20% were used to calculate the accuracy shown in the table below:
@@ -124,7 +124,7 @@ To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-vali
 
 ### 5. Build your custom database
 
-- Preparing a metadata file in `csv` format. The metadata file must contain columns named `Accession`, `Family`, `Genus` and `Species`. Example of metadata file is [here](./Dataset/RNA_meta.csv):
+- Preparing a metadata file in `csv` format. The metadata file must contain columns named `Accession`, `Family`, `Genus` and `Species`. Example of metadata file is [here](./Dataset/metadata.csv):
 
 - The sequnce `Accession` must match with the metadata `Accession`. Example of input fasta file is [here](./Dataset/RNA_seq.fasta).
 
@@ -132,7 +132,7 @@ To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-vali
 
 ```
 python3 build.py \
-   --meta ./Dataset/RNA_meta.csv \ # provide your metadata file
+   --meta ./Dataset/metadata.csv \ # provide your metadata file
    --seq ./Dataset/RNA_seq.fasta \ # provide your fasta file
    --k 17 \
    --saving_path /path/RNA.pkl
@@ -148,13 +148,13 @@ python3 build.py \
 
 ### 6. Method limitation and interpretation
 
-- VirusTaxo is trained on known virus sequences and designed to predict taxonomy of virus sequences. 
+- VirusTaxo's database is build on known virus genomes and designed to predict taxonomy of virus sequences. 
 
-- Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match. To use VirusTaxo, please make sure to remove non-virus sequences.    
+- Non-viral sequences may be misclassified as viral due to random k-mer matches in VirusTaxo predictions. To minimize the likelihood of such misclassifications, it is recommended to apply a higher Enrichment cutoff. This helps ensure that only sequences with stronger evidence of being viral are retained. Additionally, 
 
-- To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
+  - Filter out sequences by mapping to host reference genomes before using VirusTaxo. This helps remove host-derived sequences, improving the accuracy of viral predictions and reducing potential false positives.
 
-- If your sample contains non-virus sequences, it is recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`. 
+  - If your sample contains non-viral sequences, it is recommended to filter them out by using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`. 
 
 ### 7. Version history 
 
