@@ -69,7 +69,7 @@ python split_fasta.py
 
 # train.fasta, test.fasta 
 
-for k in {18..22}
+for k in {10..14}
 do
   echo "Current k-mer: $k";
   
@@ -87,11 +87,11 @@ do
     --database_path ./temp/k_mer_loop/ \
     --seq ./temp/test.fasta \
     --output_csv ./temp/k_mer_loop/VirusTaxo_predictions_"$k".csv;
-done >vt_kmers_.5.05.log
+done >vt_kmers_.5.05._k10-14.log
 
 # 5-fold cross validation
 
-for k in {1..5}
+for k in {1..3}
 do
 	echo $k;
 	python split_fasta.py;
@@ -108,7 +108,7 @@ do
     --database_path ./temp/cv/ \
     --seq ./temp/test.fasta \
     --output_csv ./temp/k_mer_loop/VirusTaxo_predictions_fold_"$k".csv;
-done >vt_5cv.log
+done >vt_3cv.log
 
 # acc testing
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
@@ -116,7 +116,7 @@ cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/t
 # invalid 
 cat VirusTaxo_predictions_*.csv | grep -v Yes | wc 
 
-# count not unclassified
+# count classified
 for file in VirusTaxo_predictions_*.csv; do
     echo $file
     for f in 3 6 9; do
@@ -126,7 +126,7 @@ for file in VirusTaxo_predictions_*.csv; do
 done | paste - - - - - - - 
 
 
-# acc test
+# acc test0
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
 
 # fam acc

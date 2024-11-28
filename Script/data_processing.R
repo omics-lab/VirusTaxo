@@ -41,5 +41,9 @@ write.csv(rna, "RNA_9067_meta.csv")
 # remove empty cells
 meta6 = meta3 %>% select("Accession", "Species", "Genus", "Family") 
 meta7 = meta6[rowSums(meta6 == "", na.rm = TRUE) == 0, ]
+length(unique(meta7$Family))
+length(unique(meta7$Genus))
+length(unique(meta7$Species))
 
 write.csv(meta7, "../Dataset/Accession_Species_Genus_Family_12612_meta.csv")
+write.csv(meta7, "../Dataset/metadata.csv", quote = FALSE, row.names = FALSE)

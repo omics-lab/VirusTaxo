@@ -41,11 +41,11 @@ tar -xvzf vt_db_jan21_2024.tar.gz
 
 | Database file | Count | Description |
 |----------|----------|----------|
-| Family_database.pkl  | n Family  | k-mer database for Family level prediction   |
-| Genus_database.pkl  | n Genus  | k-mer database for Genus level prediction   |
-| Species_database.pkl  | n Species  | k-mer database for Species level prediction   |
-| sequences.fasta  | 12613 | Complete genome sequences used to build database |
-| metadata.csv  | 12613 | Metadata associated with the dataset used to build database |
+| Family_database.pkl  | 242 Family  | k-mer database for Family level prediction   |
+| Genus_database.pkl  | 1933 Genus  | k-mer database for Genus level prediction   |
+| Species_database.pkl  | 8528 Species  | k-mer database for Species level prediction   |
+| sequences.fasta  | 12613 genome | Complete genome sequences used to build database |
+| metadata.csv  | 12613 accession | Metadata associated with the dataset used to build database |
 
 #### Step-2: Assemble the metagenomic contigs from your metavirome or metagenomic library 
    - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
@@ -88,26 +88,32 @@ python3 predict.py \
 - Example output 
 
 ```
-Id              Length  Genus           Entropy Enrichment_Score
-QuerySeq-1      219     Unclassified    1.000   0.000
-QuerySeq-2      720     Betacoronavirus 0.000   0.973
-QuerySeq-3      1540    Unknown         0.285   0.820
-QuerySeq-4      1330    Lentivirus      0.000   0.987
+Accession       Seq_Length        Family  Family_Entropy  Family_Enrichment       Genus   Genus_Entropy   Genus_Enrichment        Species Species_Entropy Species_Enrichment      Valid
+AC_000001.1     33034   Adenoviridae    0.0     0.786   Mastadenovirus  0.0     0.782   Ovine mastadenovirus A  0.0     0.745   Yes
+AC_000002.1     34446   Adenoviridae    0.0     0.845   Mastadenovirus  0.0     0.842   Bovine mastadenovirus B 0.0     0.811   Yes
+AC_000011.1     36519   Adenoviridae    -0.0    0.57    Mastadenovirus  -0.0    0.563   Human mastadenovirus E  -0.0    0.353   Yes
+AC_000189.1     34094   Adenoviridae    -0.0    0.81    Mastadenovirus  -0.0    0.803   Porcine mastadenovirus A        -0.0    0.742   Yes
+NC_000852.5     330611  Phycodnaviridae -0.0    0.121   Chlorovirus     -0.0    0.115   Unclassified    -0.0    0.014   Yes
+NC_000855.1     11158   Unclassified    0.0     0.011   Unclassified    0.0     0.006   Unclassified    0.09    0.002   Yes
+NC_000867.1     10079   Unclassified    -0.0    0.018   Unclassified    -0.0    0.01    Unclassified    0.089   0.002   Yes
+NC_000899.1     45063   Adenoviridae    0.0     0.85    Aviadenovirus   0.0     0.844   Fowl aviadenovirus D    0.0     0.772   Yes
+NC_000939.2     4415    Tombusviridae   -0.0    0.061   Aureusvirus     -0.0    0.055   Aureusvirus dioscoreae  -0.0    0.053   Yes
 ```
 
 - In the taxonomic rank column 
-   - `NoHit`: no k-mer overlap between the query and database.
-   - `Unknown`: genus name is not assigned in the [ICTV classification](https://ictv.global/). 
-   - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment_Score` (default <= 0.8) is outside of cutoff.
 
-- Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
+   - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment` (default <= 0.05 for Family and Genus; default <= 0.80 for Species classification) is outside of cutoff. 
 
-- Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
+   - Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
+
+   - Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
+
+   - `Valid` column is `Yes` if the prediction follows known taxonomic ranks, otherwise `No`. 
 
 ### 4. Prediction accurary of VirusTaxo
 To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-validation, 80% of the sequences were randomly chosen to create the database, and the other 20% were used to calculate the accuracy shown in the table below:
 
-| Class | Family | Genus |  Species | 
+|  | Family | Genus |  Species | 
 |----------|----------|----------|----------|  
 | Accurate prediction  | 97%  | 97%   | 87%   | 
 | Wrong prediction  | 3%  | 3% | 13% | 
