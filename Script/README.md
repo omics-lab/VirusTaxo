@@ -114,11 +114,11 @@ NC_000939.2  4415              Tombusviridae    -0.0            0.061           
 ### 4. Prediction accurary of VirusTaxo
 To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-validation, 80% of the sequences were randomly chosen to create the database, and the other 20% were used to calculate the accuracy shown in the table below:
 
-| Rank               | Accuracy | Unclassified | Enrichment cutoff |
-|--------------------|----------|--------------|-------------------|
-| Family             | 97%      | 45%          | >=0.05            |
-| Genus              | 97%      | 45%          | >=0.05            |
-| Species            | 87%      | 55%          | >=0.80            |
+| Rank               | Accuracy | Unclassified | Enrichment cutoff | Entropy cutoff | k-mer |
+|--------------------|----------|--------------|-------------------|--------------|-------------------|
+| Family             | 97%      | 45%          | >=0.05            | <=0.50       | 16           |
+| Genus              | 97%      | 45%          | >=0.05            | <=0.50       | 16           |
+| Species            | 87%      | 55%          | >=0.80            | <=0.50       | 16           |
 
 
 ### 5. Build custom database
@@ -132,9 +132,9 @@ To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-vali
 ```
 python3 build.py \
    --meta ./Dataset/metadata.csv \ # provide your metadata file
-   --seq ./Dataset/RNA_seq.fasta \ # provide your fasta file
-   --k 17 \
-   --saving_path /path/RNA.pkl
+   --seq ./Dataset/seq1k.fasta \ # provide your fasta file
+   --k 16 \
+   --saving_path /path/
 ```
 
  - Parameters 
