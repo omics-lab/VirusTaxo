@@ -113,14 +113,12 @@ NC_000939.2  4415              Tombusviridae    -0.0            0.061           
 ### 4. Prediction accurary of VirusTaxo
 To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-validation, 80% of the sequences were randomly chosen to create the database, and the other 20% were used to calculate the accuracy shown in the table below:
 
-|  | Family | Genus |  Species | 
-|----------|----------|----------|----------|  
-| Accurate prediction  | 97%  | 97%   | 87%   | 
-| Wrong prediction  | 3%  | 3% | 13% | 
-| Unclassified  | 45%  | 45%  | 55%  | 
-| k-mer size (bp) | 15 | 15 | 20 | 
-| Enrichment cutoff  | >=0.05 | >=0.05 | >=0.80 | 
-| Entropy cutoff  | <=0.50 | <=0.50 | <=0.50 | 
+| Rank               | Accuracy | Unclassified | Enrichment cutoff |
+|--------------------|----------|--------------|-------------------|
+| Family             | 97%      | 45%          | >=0.05            |
+| Genus              | 97%      | 45%          | >=0.05            |
+| Species            | 87%      | 55%          | >=0.80            |
+
 
 ### 5. Build your custom database
 
