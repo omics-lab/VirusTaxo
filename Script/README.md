@@ -51,6 +51,7 @@ tar -xvzf vt_db_jan21_2024.tar.gz
    - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
 
 ```
+# paired-end
 megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
 ```
 
@@ -75,12 +76,12 @@ options:
                         Enrichment score threshold for classification (default: 0.8)
 ```
 
-- Run with the sample [contig.fasta](./Dataset/contig.fasta) file
+- Run with the sample [contig.fasta](./Dataset/test.fasta) file
 
 ```
 python3 predict.py \
    --model_path /path/DNA_RNA_18451_k20.pkl \ # database file
-   --seq ./Dataset/contig.fasta # query fasta file 
+   --seq ./Dataset/test.fasta # query fasta file 
 ```
 
 ### 3. Interpretation of output
@@ -102,7 +103,7 @@ NC_000939.2  4415              Tombusviridae    -0.0            0.061           
 
 - In the taxonomic rank column 
 
-   - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment` (default <= 0.05 for Family and Genus; default <= 0.80 for Species classification) is outside of cutoff. 
+   - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment` (default <= 0.05 for Family and Genus; default <= 0.80 for Species prediction) is outside of cutoff. 
 
    - Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
 
@@ -120,7 +121,7 @@ To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-vali
 | Species            | 87%      | 55%          | >=0.80            |
 
 
-### 5. Build your custom database
+### 5. Build custom database
 
 - Preparing a metadata file in `csv` format. The metadata file must contain columns named `Accession`, `Family`, `Genus` and `Species`. Example of metadata file is [here](./Dataset/metadata.csv):
 
