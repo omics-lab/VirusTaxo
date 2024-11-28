@@ -149,7 +149,7 @@ python3 build.py \
 
 - VirusTaxo's database is build on known virus genomes and designed to predict taxonomy of virus sequences. 
 
-- Non-viral sequences may be misclassified as viral due to random k-mer matches in VirusTaxo predictions. To minimize the likelihood of such misclassifications, it is recommended to apply a higher Enrichment cutoff. This helps ensure that only sequences with stronger evidence of being viral are retained. Additionally, 
+- Non-viral sequences may be misclassified as viral due to random k-mer matches in VirusTaxo predictions. To minimize the likelihood of such misclassifications, it is recommended to apply a higher `Enrichment` cutoff. This helps ensure that only sequences with stronger evidence of being viral are retained. Additionally, 
 
   - Filter out sequences by mapping to host reference genomes before using VirusTaxo. This helps remove host-derived sequences, improving the accuracy of viral predictions and reducing potential false positives.
 
@@ -159,7 +159,7 @@ python3 build.py \
 
 | VirusTaxo | Database  | Data Date     | Sequences | Download |
 |----------|----------|----------|----------|----------|
-| [v2]() Family, Genus, Species prediction | database.v3_2024  | Jan21_2024  | DNA=9384 &  RNA=9067  | [here]()  |
+| [v2](https://github.com/omics-lab/VirusTaxo/) Family, Genus, Species prediction | database.v3_2024  | Jan21_2024  | DNA=9384 &  RNA=9067  | [here]  |
 | [v1](Script/v1) Genus prediction | database.v2_2024  | Jan21_2024  | DNA=9384 &  RNA=9067  | [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing)  |
 | [v1](Script/v1) Genus prediction | database.v1_2022  | Apr27_2022  | DNA=4421 &  RNA=2529  | [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing)  |
 | [Used in manuscript](https://github.com/omics-lab/VirusTaxo_Hierarchical) | database.v1_2022  | Apr27_2022  | DNA=4421 &  RNA=2529  | [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing) |

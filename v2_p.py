@@ -8,7 +8,7 @@ import os
 import argparse
 
 
-def predict(fasta_file, database_path, output_csv, custom_E=0.5, custom_es=0.8):
+def predict(fasta_file, database_path, output_csv, entropy, enrichment, enrichment_spp):
     # Define rank names and initialize list to store output file paths
     ranks = ["Family", "Genus", "Species"]
     temp_dir = "./temp/"
@@ -16,11 +16,21 @@ def predict(fasta_file, database_path, output_csv, custom_E=0.5, custom_es=0.8):
     output_files = []
 
     for rank in ranks:
+        # Set the default enrichment based on rank
+        if rank == "Species":
+            enrichment_value = enrichment_spp  # Use species-specific enrichment if provided
+        else:
+            enrichment_value = enrichment  # Use the general enrichment value for Genus and Family
+
+        # Print the entropy and enrichment values for the current rank
+        print(f"Processing rank: {rank}")
+        print(f"Using entropy threshold: {entropy}")
+        print(f"Using enrichment threshold: {enrichment_value}")
+
         model_file = os.path.join(database_path, f"{rank}_database.pkl")
         output_file = os.path.join(temp_dir, f"{rank}_predictions.csv")
         output_files.append(output_file)
 
-        print(f"Processing taxonomic rank: {rank}")
         print(f"Loading database from: {model_file}")
 
         # Load the model
@@ -52,9 +62,9 @@ def predict(fasta_file, database_path, output_csv, custom_E=0.5, custom_es=0.8):
                     length = len(record.seq)
 
                     # Check if the conditions for "Unclassified" are met for both predictions using custom thresholds
-                    if E_1 >= custom_E or es1 <= custom_es:
+                    if E_1 >= entropy or es1 <= enrichment_value:
                         prediction_1 = "Unclassified"
-                    if E_2 >= custom_E or es2 <= custom_es:
+                    if E_2 >= entropy or es2 <= enrichment_value:
                         prediction_2 = "Unclassified"
 
                     # Write the results based on the best prediction
@@ -69,6 +79,7 @@ def predict(fasta_file, database_path, output_csv, custom_E=0.5, custom_es=0.8):
                     pbar.update(1)  # Update the progress bar for each record
 
         print(f"Predictions saved to {output_file}")
+
 
     # Merge the output CSV files
     print("Merging predictions from all ranks...")
@@ -145,12 +156,15 @@ if __name__ == '__main__':
     parser.add_argument('--output_csv', required=False, default="VirusTaxo_merged_predictions.csv",
                         help='Path to save the merged output CSV file (default: VirusTaxo_predictions.csv)')
 
-    parser.add_argument('--custom_E', required=False, default=0.5, type=float,
-                        help='Custom entropy threshold (default: 0.5)')
+    parser.add_argument('--entropy', required=False, default=0.5, type=float,
+                        help='Entropy threshold (default: 0.5)')
 
-    parser.add_argument('--custom_es', required=False, default=0.8, type=float,
-                        help='Custom enrichment score threshold (default: 0.8)')
+    parser.add_argument('--enrichment', required=False, default=0.05, type=float,
+                        help='Enrichment score threshold for Genus and Family (default: 0.05)')
+
+    parser.add_argument('--enrichment_spp', required=False, default=0.8, type=float,
+                        help='Enrichment score threshold for Species (default: 0.8)')
 
     args = parser.parse_args()
 
-    predict(args.seq, args.database_path, args.output_csv, args.custom_E, args.custom_es)
+    predict(args.seq, args.database_path, args.output_csv, args.entropy, args.enrichment, args.enrichment_spp)

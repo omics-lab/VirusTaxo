@@ -1,0 +1,101 @@
+Accession,Query_Seq_Length,Family,Family_Entropy,Family_Enrichment,Genus,Genus_Entropy,Genus_Enrichment,Species,Species_Entropy,Species_Enrichment,Valid
+NC_002200.1,15384,Paramyxoviridae,0.0,1.0,Orthorubulavirus,0.0,1.0,Orthorubulavirus parotitidis,0.0,1.0,Yes
+NC_002645.1,27317,Coronaviridae,0.0,0.999,Alphacoronavirus,0.0,0.999,Human coronavirus 229E,0.0,0.999,Yes
+NC_003637.1,360,Pospiviroidae,0.0,1.0,Pospiviroid,0.0,0.997,Mexican papita viroid,0.0,0.997,Yes
+NC_004628.1,2754,Geminiviridae,0.0,1.0,Begomovirus,0.0,0.998,Unclassified,0.0,0.767,Yes
+NC_004629.1,280334,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_006631.1,2747,Geminiviridae,0.0,1.0,Begomovirus,0.0,1.0,Unclassified,0.0,0.755,Yes
+NC_006956.1,1032,Unclassified,0.0,0.004,Unclassified,0.0,0.004,Unclassified,0.0,0.003,Yes
+NC_007065.1,43440,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_008495.1,2514,Geminiviridae,0.0,1.0,Begomovirus,0.0,1.0,Desmodium leaf distortion virus,0.0,0.844,Yes
+NC_008723.1,44041,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_009015.1,72415,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_010648.1,2593,Geminiviridae,0.0,1.0,Begomovirus,0.0,1.0,Macroptilium yellow mosaic virus,0.0,0.969,Yes
+NC_010664.1,1268,Spinareoviridae,0.0,1.0,Cypovirus,0.0,1.0,Cypovirus 5,0.0,1.0,Yes
+NC_011534.1,39472,Autographiviridae,0.0,1.0,Berlinvirus,0.0,0.983,Unclassified,0.0,0.75,Yes
+NC_011540.1,8500,Betaflexiviridae,0.0,1.0,Carlavirus,0.0,1.0,Hippeastrum latent virus,0.0,1.0,Yes
+NC_011555.2,2290,Bromoviridae,0.0,1.0,Ilarvirus,0.0,1.0,Blackberry chlorotic ringspot virus,0.0,1.0,Yes
+NC_014139.1,2618,Geminiviridae,0.0,1.0,Begomovirus,0.0,0.996,Abutilon Brazil virus,0.0,0.97,Yes
+NC_015937.1,151483,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_018102.1,4927,Polyomaviridae,0.0,1.0,Deltapolyomavirus,0.0,0.997,Deltapolyomavirus decihominis,0.0,0.997,Yes
+NC_018272.1,35652,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_021308.1,52617,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_021348.1,156558,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_022893.1,412,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_023866.1,1784,Circoviridae,0.0,1.0,Cyclovirus,0.0,1.0,Cyclovirus libelula,0.0,0.995,Yes
+NC_024363.1,68807,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_025707.1,5749,Bacilladnaviridae,0.0,1.0,Seawadnavirus,0.0,1.0,Seawadnavirus kuhtahan,0.0,1.0,Yes
+NC_026623.1,10284,Flaviviridae,0.0,1.0,Orthoflavivirus,0.0,1.0,Orthoflavivirus cacipacoreense,0.0,0.996,Yes
+NC_027119.1,157498,Ackermannviridae,0.0,1.0,Kuttervirus,0.0,0.988,Unclassified,0.0,0.475,Yes
+NC_027293.1,87999,Unclassified,0.13,0.0,Unclassified,0.65,0.0,Unclassified,0.84,0.0,Yes
+NC_027342.1,41268,Autographiviridae,0.0,1.0,Novosibovirus,0.0,0.999,Novosibovirus PM16,0.0,0.999,Yes
+NC_028258.1,2531,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_029001.1,32000,Unclassified,0.0,0.026,Unclassified,0.0,0.026,Unclassified,0.0,0.026,Yes
+NC_030233.1,9357,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_030901.1,92618,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_031097.1,52077,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_031748.1,9850,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_031908.1,42685,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_032178.1,3211,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_032266.1,1814,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_032772.1,9598,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_032829.1,10120,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_034474.1,3637,Hantaviridae,0.0,1.0,Orthohantavirus,0.0,1.0,Orthohantavirus caobangense,0.0,1.0,Yes
+NC_034501.1,975,Peribunyaviridae,0.0,1.0,Orthobunyavirus,0.0,1.0,Orthobunyavirus kaengkhoiense,0.0,1.0,Yes
+NC_035186.1,5183,Parvoviridae,0.0,1.0,Bocaparvovirus,0.0,1.0,Bocaparvovirus ungulate7,0.0,1.0,Yes
+NC_038714.1,7428,Peribunyaviridae,0.0,1.0,Herbevirus,0.0,1.0,Herbevirus herberti,0.0,1.0,Yes
+NC_038879.1,2778,Geminiviridae,0.0,1.0,Begomovirus,0.0,0.998,Eupatorium yellow vein mosaic virus,0.0,0.95,Yes
+NC_038979.1,8327,Deltaflexiviridae,0.0,1.0,Deltaflexivirus,0.0,1.0,Soybean-associated deltaflexivirus 1,0.0,1.0,Yes
+NC_039081.1,1379,Unclassified,0.0,0.001,Unclassified,0.0,0.001,Unclassified,0.0,0.001,Yes
+NC_040308.1,3533,Unclassified,0.0,0.001,Unclassified,0.0,0.001,Unclassified,0.0,0.001,Yes
+NC_040310.1,6635,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_040375.1,6434,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_040594.1,8966,Unclassified,0.0,0.001,Unclassified,0.0,0.001,Unclassified,0.0,0.001,Yes
+NC_041854.1,43827,Autographiviridae,0.0,0.999,Phimunavirus,0.0,0.994,Phimunavirus fM1,0.0,0.994,Yes
+NC_042124.1,39964,Autographiviridae,0.0,1.0,Friunavirus,0.0,1.0,Friunavirus D2,0.0,1.0,Yes
+NC_043182.1,2141,Sedoreoviridae,0.0,1.0,Cardoreovirus,0.0,1.0,Eriocheir sinensis reovirus,0.0,1.0,Yes
+NC_043203.1,731,Tolecusatellitidae,0.0,1.0,Deltasatellite,0.0,1.0,Sweet potato leaf curl deltasatellite 3,0.0,1.0,Yes
+NC_043342.1,23513,Polydnaviriformidae,0.0,1.0,Bracoviriform,0.0,1.0,Bracoviriform indiense,0.0,0.999,Yes
+NC_043436.1,4995,Nairoviridae,0.0,1.0,Orthonairovirus,0.0,1.0,Orthonairovirus chimense,0.0,1.0,Yes
+NC_047971.1,40337,Autographiviridae,0.0,1.0,Przondovirus,0.0,0.982,Unclassified,0.0,0.544,Yes
+NC_048213.1,27464,Coronaviridae,0.0,1.0,Gammacoronavirus,0.0,1.0,Avian coronavirus,0.0,1.0,Yes
+NC_048673.1,229929,Straboviridae,0.0,1.0,Ceceduovirus,0.0,1.0,Ceceduovirus aszj,0.0,1.0,Yes
+NC_048682.1,145759,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.285,0.0,Yes
+NC_048734.1,69660,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_048771.1,138690,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_049366.1,32150,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_049468.1,50782,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_049502.1,156130,Ackermannviridae,0.0,1.0,Kuttervirus,0.0,0.989,Unclassified,0.0,0.472,Yes
+NC_052989.1,61736,Casjensviridae,0.0,1.0,Jacunavirus,0.0,1.0,Jacunavirus JC01,0.0,1.0,Yes
+NC_054438.1,44904,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_055063.1,10272,Autolykiviridae,0.0,1.0,Livvievirus,0.0,1.0,Paulavirus viph1044o,0.0,1.0,Yes
+NC_055221.1,3580,Chrysoviridae,0.0,1.0,Betachrysovirus,0.0,1.0,Betachrysovirus fugramineari,0.0,1.0,Yes
+NC_055230.1,221923,Poxviridae,0.0,1.0,Orthopoxvirus,0.0,0.992,Unclassified,0.0,0.691,Yes
+NC_055564.1,4214,Tombusviridae,0.0,1.0,Umbravirus,0.0,1.0,Umbravirus patriniae,0.0,1.0,Yes
+NC_055586.1,2659,Geminiviridae,0.0,1.0,Begomovirus,0.0,1.0,Tomato yellow leaf deformation dwarf virus,0.0,0.898,Yes
+NC_055804.1,60468,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_055902.1,96717,Suoliviridae,0.0,1.0,Cacepaovirus,0.0,1.0,Cacepaovirus simiae,0.0,1.0,Yes
+NC_069156.1,39857,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_070682.1,35299,Aliceevansviridae,0.0,1.0,Moineauvirus,0.0,0.968,Unclassified,0.0,0.56,Yes
+NC_070857.1,76359,Unclassified,0.0,0.001,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_070867.1,74962,Schitoviridae,0.0,1.0,Pokkenvirus,0.0,0.999,Stenotrophomonas phage Paxi,0.0,0.999,Yes
+NC_070891.1,47982,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_073198.1,42503,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_073214.1,42847,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_073768.1,3727,Atkinsviridae,0.0,1.0,Bilifuvirus,0.0,1.0,Bilifuvirus defluviicola,0.0,1.0,Yes
+NC_073982.1,3654,Fiersviridae,0.0,1.0,Konkivirus,0.0,1.0,Konkivirus lutihabitans,0.0,1.0,Yes
+NC_074058.1,3303,Fiersviridae,0.0,1.0,Phulivirus,0.0,1.0,Phulivirus tegeticola,0.0,1.0,Yes
+NC_076423.1,1889,Circoviridae,0.0,1.0,Circovirus,0.0,1.0,Circovirus whale,0.0,1.0,Yes
+NC_076680.1,5234,Botourmiaviridae,0.0,1.0,Betarhizoulivirus,0.0,1.0,Betarhizoulivirus solani,0.0,1.0,Yes
+NC_076948.1,9761,Matonaviridae,0.0,1.0,Rubivirus,0.0,1.0,Rubivirus rubellae,0.0,1.0,Yes
+NC_076990.1,11278,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_077109.1,1967,Circoviridae,0.0,1.0,Circovirus,0.0,1.0,Wolvfec circovius,0.0,1.0,Yes
+NC_077138.1,4350,Parvoviridae,0.0,1.0,Amdoparvovirus,0.0,1.0,Amdoparvovirus carnivoran5,0.0,0.904,Yes
+NC_078344.1,12550,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Unclassified,0.0,0.0,Yes
+NC_078606.1,1022,Orthomyxoviridae,0.0,1.0,Sardinovirus,0.0,1.0,Sardinovirus pilchardi,0.0,1.0,Yes
+NC_078638.1,4460,Secoviridae,0.0,0.995,Nepovirus,0.0,0.995,Nepovirus alphavitis,0.0,0.994,Yes
+NC_078843.1,1749,Secoviridae,0.0,1.0,Nepovirus,0.0,1.0,Nepovirus manihotis,0.0,1.0,Yes
+NC_078869.1,1504,Phasmaviridae,0.0,1.0,Hymovirus,0.0,1.0,Hymovirus chrysis,0.0,1.0,Yes
+NC_079022.1,2784,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_079075.1,1739,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Unclassified,1.0,0.0,Yes
+NC_079111.1,2382,Alternaviridae,0.0,0.993,Alternavirus,0.0,0.993,Fusarium oxysporum alternavirus 1,0.0,0.993,Yes
