@@ -88,16 +88,16 @@ python3 predict.py \
 - Example output 
 
 ```
-Accession    Query_Seq_Length  Family           Family_Entropy  Family_Enrichment  Genus           Genus_Entropy  Genus_Enrichment  Species       Species_Entropy  Species_Enrichment  Valid
-AC_000001.1  33034             Adenoviridae     0.0             0.786              Mastadenovirus  0.0            0.782             Ovine         mastadenovirus   A                   0.0    0.745  Yes
-AC_000002.1  34446             Adenoviridae     0.0             0.845              Mastadenovirus  0.0            0.842             Bovine        mastadenovirus   B                   0.0    0.811  Yes
-AC_000011.1  36519             Adenoviridae     -0.0            0.57               Mastadenovirus  -0.0           0.563             Human         mastadenovirus   E                   -0.0   0.353  Yes
-AC_000189.1  34094             Adenoviridae     -0.0            0.81               Mastadenovirus  -0.0           0.803             Porcine       mastadenovirus   A                   -0.0   0.742  Yes
-NC_000852.5  330611            Phycodnaviridae  -0.0            0.121              Chlorovirus     -0.0           0.115             Unclassified  -0.0             0.014               Yes
-NC_000855.1  11158             Unclassified     0.0             0.011              Unclassified    0.0            0.006             Unclassified  0.09             0.002               Yes
-NC_000867.1  10079             Unclassified     -0.0            0.018              Unclassified    -0.0           0.01              Unclassified  0.089            0.002               Yes
-NC_000899.1  45063             Adenoviridae     0.0             0.85               Aviadenovirus   0.0            0.844             Fowl          aviadenovirus    D                   0.0    0.772  Yes
-NC_000939.2  4415              Tombusviridae    -0.0            0.061              Aureusvirus     -0.0           0.055             Aureusvirus   dioscoreae       -0.0                0.053  Yes
+Accession    Query Seq Length  Family           Family Entropy  Family Enrichment  Genus           Genus Entropy  Genus Enrichment  Species                   Species Entropy  Species Enrichment  Valid
+AC 000001.1  33034             Adenoviridae     0.0             0.786              Mastadenovirus  0.0            0.782             Ovine mastadenovirus A    0.0              0.745               Yes
+AC 000002.1  34446             Adenoviridae     0.0             0.845              Mastadenovirus  0.0            0.842             Bovine mastadenovirus B   0.0              0.811               Yes
+AC 000011.1  36519             Adenoviridae     -0.0            0.57               Mastadenovirus  -0.0           0.563             Human mastadenovirus E    -0.0             0.353               Yes
+AC 000189.1  34094             Adenoviridae     -0.0            0.81               Mastadenovirus  -0.0           0.803             Porcine mastadenovirus A  -0.0             0.742               Yes
+NC 000852.5  330611            Phycodnaviridae  -0.0            0.121              Chlorovirus     -0.0           0.115             Unclassified              -0.0             0.014               Yes
+NC 000855.1  11158             Unclassified     0.0             0.011              Unclassified    0.0            0.006             Unclassified              0.09             0.002               Yes
+NC 000867.1  10079             Unclassified     -0.0            0.018              Unclassified    -0.0           0.01              Unclassified              0.089            0.002               Yes
+NC 000899.1  45063             Adenoviridae     0.0             0.85               Aviadenovirus   0.0            0.844             Fowl aviadenovirus D      0.0              0.772               Yes
+NC 000939.2  4415              Tombusviridae    -0.0            0.061              Aureusvirus     -0.0           0.055             Aureusvirus dioscoreae    -0.0             0.053               Yes
 ```
 
 - In the taxonomic rank column 
