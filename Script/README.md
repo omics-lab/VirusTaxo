@@ -80,7 +80,7 @@ options:
 
 ```
 python3 predict.py \
-   --model_path /path/DNA_RNA_18451_k20.pkl \ # database file
+   --database_path /path/DNA_RNA_18451_k20.pkl \ # database file
    --seq ./Dataset/test.fasta # query fasta file 
 ```
 
@@ -116,9 +116,9 @@ To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-vali
 
 | Rank               | Accuracy | Unclassified | Enrichment cutoff | Entropy cutoff | k-mer |
 |--------------------|----------|--------------|-------------------|--------------|-------------------|
-| Family             | 97%      | 45%          | >=0.05            | <=0.50       | 16           |
-| Genus              | 97%      | 45%          | >=0.05            | <=0.50       | 16           |
-| Species            | 87%      | 55%          | >=0.80            | <=0.50       | 16           |
+| Family             | 99.99%      | 53%          | >=0.05            | <=0.50       | 16           |
+| Genus              | 97.26%      | 57%          | >=0.05            | <=0.50       | 16           |
+| Species            | 85.32%      | 98.5%          | >=0.80            | <=0.50       | 16           |
 
 
 ### 5. Build custom database

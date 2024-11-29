@@ -29,6 +29,21 @@ python v2_b.py \
   --k 16 \
   --saving_dir ./temp/database/
 
+# testing final model 
+
+for f in ./temp/test/*fasta;
+do echo $f;
+python3 v2_p.py \
+   --database_path ./temp/database/ \
+   --seq $f \
+   --output_csv ./temp/test/$f.csv
+done
+
+python3 v2_p.py \
+   --database_path ./temp/database/ \
+   --seq ./Dataset/asm_islam.et.al_6648_covid_random.fasta \
+   --output_csv ./temp/test/VirusTaxo_predictions_covid_random.csv
+
 # check acc python at 5-fold 80% vs 20%
 
 # check with different kmers
@@ -44,8 +59,9 @@ python split_fasta.py
 
 # train.fasta, test.fasta 
 
-# test
-for k in {10..14}
+# test on local pc
+
+for k in {10..11}
 do
   echo "Current k-mer: $k";
   
@@ -65,10 +81,6 @@ do
     --output_csv VirusTaxo_predictions_"$k".csv;
 done
 
-  python3 v2_p.py \
-    --database_path ../temp/ \
-    --seq ../temp/seq100.fasta \
-    --output_csv VirusTaxo_predictions.csv;
 
 # in server 
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/
@@ -105,9 +117,9 @@ do
 done >vt_kmers_.5.05._k10-14.log
 
 
-# 3-fold cross validation
+# 5-fold cross validation
 
-for k in {1..3}
+for k in {7..10}
 do
 	echo $k;
 	python split_fasta.py;
@@ -123,8 +135,9 @@ do
   python3 v2_p.py \
     --database_path ./temp/cv/ \
     --seq ./temp/test.fasta \
+    --entropy 0.8 \
     --output_csv ./temp/cv/VirusTaxo_predictions_fold_"$k".csv;
-done >vt_3cv.log
+done >vt_3cv_2.log
 
 # acc testing
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
