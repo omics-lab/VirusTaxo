@@ -9,12 +9,24 @@ python v2_b.py \
 #### final model validation
 # asm test was successful: all genus and family and 80% species detection with default
 # random seqs were not classified at default
+# no other taxonomy was predicted in both covid and random fasta
 
 for f in ./temp/test/*meta*fasta;
 do echo $f;
 python3 v2_p.py \
    --database_path ./temp/database/ \
    --seq $f \
+   --output_csv $f.csv
+done
+
+#
+for f in ./temp/test/gencode.1k.fasta;
+do echo $f;
+python3 v2_p.py \
+   --database_path ./temp/database/ \
+   --seq $f \
+   --enrichment 0 \
+   --enrichment_spp 0 \
    --output_csv $f.csv
 done
 
@@ -131,15 +143,16 @@ done | paste - - - - - - -
 
 # acc test0
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
+metadata=/projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/metadata.csv
 
 # fam acc
-for f in VirusTaxo_predictions_*.csv;
+for f in *.csv;
 do 
 	echo $f;
 	less $f | awk -F, '{print $1"_"$3}' | sort >temp1
 	a=$(less temp1 | grep -v Uncl | wc -l);
 	echo $a;
-	less ../metadata.csv | tr -d '"' | awk -F, '{print $2"_"$5}' | sort >temp2
+	less $metadata | tr -d '"' | awk -F, '{print $2"_"$5}' | sort >temp2
 	b=$(grep -f temp1 temp2 | wc -l);
 	echo $b;
 	acc=$(awk "BEGIN {print $b / $a}");

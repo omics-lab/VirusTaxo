@@ -62,18 +62,26 @@ megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
 ```
 python3 predict.py -h
 
-usage: predict.py [-h] --model_path MODEL_PATH --seq SEQ [--output_csv OUTPUT_CSV] [--entropy ENTROPY] [--enrichment_score ENRICHMENT_SCORE]
+usage: predict.py [-h] --database_path DATABASE_PATH --seq SEQ [--output_csv OUTPUT_CSV]
+               [--entropy ENTROPY] [--enrichment ENRICHMENT]
+               [--enrichment_spp ENRICHMENT_SPP]
 
 options:
   -h, --help            show this help message and exit
-  --model_path MODEL_PATH
-                        Absolute or relative path of pre-built model
-  --seq SEQ             Absolute or relative path of fasta sequence file
+  --database_path DATABASE_PATH
+                        Absolute or relative path containing three database files
+                        (Family_database.pkl, Genus_database.pkl and Species_database.pkl)
+  --seq SEQ             Absolute or relative path of the input fasta sequence file
   --output_csv OUTPUT_CSV
-                        Path to save the output CSV file (default: VirusTaxo_taxonomy_output.csv)
-  --entropy ENTROPY     Entropy threshold for classification (default: 0.5)
-  --enrichment_score ENRICHMENT_SCORE
-                        Enrichment score threshold for classification (default: 0.8)
+                        Path to save the output CSV file (default:
+                        VirusTaxo_predictions.csv)
+  --entropy ENTROPY     Entropy threshold; entropy range is [0-1] (default: 0.5)
+  --enrichment ENRICHMENT
+                        Enrichment score threshold for Genus and Family; enrichment range
+                        is [0-1] (default: 0.05)
+  --enrichment_spp ENRICHMENT_SPP
+                        Enrichment score threshold for Species; enrichment range is [0-1]
+                        (default: 0.8)
 ```
 
 - Run with an example [fasta](./Dataset/test.fasta) file

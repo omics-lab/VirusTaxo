@@ -47,3 +47,16 @@ length(unique(meta7$Species))
 
 write.csv(meta7, "../Dataset/Accession_Species_Genus_Family_12612_meta.csv")
 write.csv(meta7, "../Dataset/metadata.csv", quote = FALSE, row.names = FALSE)
+
+#MISC
+a = read.csv("../temp/metavirome.fasta.csv")
+
+breaks <- seq(min(0), max(1), by = 0.025)
+
+hist(a$Family_Enrichment, breaks = breaks)
+hist(a$Genus_Enrichment, breaks = breaks)
+hist(a$Species_Enrichment, breaks = breaks)
+
+hist(a$Family_Entropy)
+hist(a$Genus_Entropy)
+hist(a$Species_Entropy)

@@ -1,7 +1,3 @@
-# accession with complete species, genus and family are taken
-# 12612 Accession, 8528 species, 1933 genus and 242 family
-# ./Dataset/Accession_Species_Genus_Family_12612_meta.csv
-
 import argparse
 import pandas as pd
 from Bio import SeqIO
@@ -19,7 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('--k', required=True, type=int,
                         help='Length of k-mer')
     parser.add_argument('--saving_dir', required=True,
-                        help='Directory path to save model files')
+                        help='Directory path to save database files')
 
     args = parser.parse_args()
 

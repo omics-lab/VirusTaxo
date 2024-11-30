@@ -9,7 +9,7 @@ import argparse
 import tempfile
 
 def predict(fasta_file, database_path, output_csv, entropy, enrichment, enrichment_spp):
-    # Define rank names and initialize list to store output file paths
+
     ranks = ["Family", "Genus", "Species"]
     
     # Create a temporary directory using tempfile
@@ -46,7 +46,6 @@ def predict(fasta_file, database_path, output_csv, entropy, enrichment, enrichme
             # Open the CSV file for writing
             with open(output_file, 'w', newline='') as csvfile:
                 csv_writer = csv.writer(csvfile)
-                # Write the header
                 csv_writer.writerow(['Accession', 'Query_Seq_Length', rank, f'{rank}_Entropy', f'{rank}_Enrichment'])
 
                 # Get k-mer length
@@ -58,12 +57,12 @@ def predict(fasta_file, database_path, output_csv, entropy, enrichment, enrichme
                 # Process each record in the FASTA file with a progress bar
                 with tqdm(total=num_sequences, desc=f"Processing query sequences for {rank}") as pbar:
                     for record in SeqIO.parse(fasta_file, "fasta"):
-                        # Get predictions for both the sequence and its reverse complement
+                        # Get predictions for both forward and reverse complement sequences 
                         prediction_1, cnt_1, E_1, es1 = get_rank(record.seq, model, k)
                         prediction_2, cnt_2, E_2, es2 = get_rank(record.seq.reverse_complement(), model, k)
                         length = len(record.seq)
 
-                        # Check if the conditions for "Unclassified" are met for both predictions using custom thresholds
+                        # Check if the conditions for "Unclassified" are met for both predictions 
                         if E_1 >= entropy or es1 <= enrichment_value:
                             prediction_1 = "Unclassified"
                         if E_2 >= entropy or es2 <= enrichment_value:
@@ -78,7 +77,7 @@ def predict(fasta_file, database_path, output_csv, entropy, enrichment, enrichme
                             else:
                                 csv_writer.writerow([record.id, length, prediction_2, f'{E_2:.3f}', f'{es2:.3f}'])
 
-                        pbar.update(1)  # Update the progress bar for each record
+                        pbar.update(1)  
 
             print(f"Predictions saved to {output_file}")
 
@@ -100,19 +99,18 @@ def predict(fasta_file, database_path, output_csv, entropy, enrichment, enrichme
         # Validate and filter merged predictions based on taxonomic hierarchy
         print("Validating and filtering merged predictions based on valid taxonomic hierarchy...")
 
-        # Step 1: Load input files
         # Load metadata
         metadata_file = os.path.join(database_path, "metadata.csv")
         metadata = pd.read_csv(metadata_file)
         metadata = metadata[["Family", "Genus", "Species"]]
 
-        # Step 2: Create sets for each row of metadata
+        # Create sets for each row of metadata
         metadata_sets = metadata.apply(lambda row: set(row), axis=1).tolist()
 
-        # Step 3: Create sets for each row of merged_df
+        # Create sets for each row of merged_df
         merged_df['RowSet'] = merged_df[["Family", "Genus", "Species"]].apply(lambda row: set(row), axis=1)
 
-        # Step 4: Define a function to determine validity strictly per row
+        # Define a function to determine validity strictly per row
         def is_valid(row_set):
             for metadata_set in metadata_sets:
                 unclassified_count = list(row_set).count("Unclassified")
@@ -135,8 +133,8 @@ def predict(fasta_file, database_path, output_csv, entropy, enrichment, enrichme
         yes_count = (merged_df['Valid'] == "Yes").sum()
         no_count = (merged_df['Valid'] == "No").sum()
 
-        print(f"Number of rows with valid taxonomy: {yes_count}")
-        print(f"Number of rows with invalid taxonomy: {no_count}")
+        print(f"Number of sequences with valid taxonomy: {yes_count}")
+        print(f"Number of sequences with invalid taxonomy: {no_count}")
 
         # Drop the temporary 'RowSet' column and save the output
         merged_df.drop(columns=['RowSet'], inplace=True)
@@ -148,22 +146,22 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--database_path', required=True,
-                        help='Absolute or relative path containing three model files (Family_database.pkl, Genus_database.pkl and Species_database.pkl)')
+                        help='Absolute or relative path containing three database files (Family_database.pkl, Genus_database.pkl and Species_database.pkl)')
 
     parser.add_argument('--seq', required=True,
-                        help='Absolute or relative path of fasta sequence file')
+                        help='Absolute or relative path of the input fasta sequence file')
 
-    parser.add_argument('--output_csv', required=False, default="'VirusTaxo_merged_predictions.csv' on the current directory",
-                        help='Path to save the merged output CSV file (default: VirusTaxo_predictions.csv)')
+    parser.add_argument('--output_csv', required=False, default="VirusTaxo_merged_predictions.csv",
+                        help='Path to save the output CSV file (default: VirusTaxo_predictions.csv)')
 
     parser.add_argument('--entropy', required=False, default=0.5, type=float,
-                        help='Entropy threshold (default: 0.5)')
+                        help='Entropy threshold; entropy range is [0-1] (default: 0.5)')
 
     parser.add_argument('--enrichment', required=False, default=0.05, type=float,
-                        help='Enrichment score threshold for Genus and Family (default: 0.05)')
+                        help='Enrichment score threshold for Genus and Family; enrichment range is [0-1] (default: 0.05)')
 
     parser.add_argument('--enrichment_spp', required=False, default=0.8, type=float,
-                        help='Enrichment score threshold for Species (default: 0.8)')
+                        help='Enrichment score threshold for Species; enrichment range is [0-1] (default: 0.8)')
 
     args = parser.parse_args()
 
