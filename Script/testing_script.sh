@@ -1,27 +1,4 @@
-python3 predict.py \
-   --model_path ../temp/vt_db_jan21_2024/RNA*.pkl \
-   --seq ./Dataset/asm_islam.et.al_6648_covid_random.fasta >../temp/testout
-
-python3 predict.py \
-	--model_path ../../temp/vt_db_jan21_2024/DNA_RNA*pkl \
-	--seq ../Dataset/asm_head.fasta 
-
-less ../temp/testout | head 
-less ../temp/testout | awk '$4 <=.5 && $5 >= .8{print $0}' | head 
-
-
-python v2_b.py \
-	 --meta ./Dataset/Accession_Species_Genus_Family_12612_meta_1k.csv \
-	 --seq ../temp/vt2_database/sequences_20240122_3701960.fasta \
-	 --k 20 \
-	 --saving_dir ../temp/vt2_database
-
-python3 v2_p.py \
-	--database_path ../temp/vt2_database/ \
-	--seq ./Dataset/asm_head.fasta 
-
-
-# build final model
+#### build final model
 
 python v2_b.py \
   --meta ./temp/database/metadata.csv \
@@ -29,20 +6,17 @@ python v2_b.py \
   --k 16 \
   --saving_dir ./temp/database/
 
-# testing final model 
+#### final model validation
+# asm test was successful: all genus and family and 80% species detection with default
+# random seqs were not classified at default
 
-for f in ./temp/test/*fasta;
+for f in ./temp/test/*meta*fasta;
 do echo $f;
 python3 v2_p.py \
    --database_path ./temp/database/ \
    --seq $f \
-   --output_csv ./temp/test/$f.csv
+   --output_csv $f.csv
 done
-
-python3 v2_p.py \
-   --database_path ./temp/database/ \
-   --seq ./Dataset/asm_islam.et.al_6648_covid_random.fasta \
-   --output_csv ./temp/test/VirusTaxo_predictions_covid_random.csv
 
 # check acc python at 5-fold 80% vs 20%
 
@@ -82,7 +56,7 @@ do
 done
 
 
-# in server 
+#### in server 
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/
 #scp -r /home/rashedul/project/VirusTaxo/ rislam@gphost03.bcgsc.ca:/projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/
 
@@ -117,7 +91,7 @@ do
 done >vt_kmers_.5.05._k10-14.log
 
 
-# 5-fold cross validation
+#### 5-fold cross validation
 
 for k in {7..10}
 do
@@ -139,14 +113,14 @@ do
     --output_csv ./temp/cv/VirusTaxo_predictions_fold_"$k".csv;
 done >vt_3cv_2.log
 
-# acc testing
+#### acc testing
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/temp/k_mer_loop/
 
 # invalid 
 cat VirusTaxo_predictions_*.csv | grep -v Yes | wc 
 
 # count classified
-for file in VirusTaxo_predictions*.csv; do
+for file in *.csv; do
     echo $file
     for f in 3 6 9; do
         echo "rank: $f:"
