@@ -1,7 +1,7 @@
 #### build final model
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/
 
-python v2_b.py \
+python build.py \
   --meta ./temp/database/metadata.csv \
   --seq ./temp/database/sequences.fasta \
   --k 16 \

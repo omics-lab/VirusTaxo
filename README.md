@@ -109,7 +109,7 @@ NC_000899.1  45063             Adenoviridae     0.0             0.85            
 NC_000939.2  4415              Tombusviridae    -0.0            0.061              Aureusvirus     -0.0           0.055             Aureusvirus dioscoreae    -0.0             0.053               Yes
 ```
 
-- In the taxonomic rank column 
+- In the output file  
 
    - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment` (default <= 0.05 for Family and Genus; default <= 0.80 for Species prediction) is outside of cutoff. 
 
