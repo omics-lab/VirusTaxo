@@ -1,4 +1,5 @@
 #### build final model
+cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/
 
 python v2_b.py \
   --meta ./temp/database/metadata.csv \
@@ -10,6 +11,8 @@ python v2_b.py \
 # asm test was successful: all genus and family and 80% species detection with default
 # random seqs were not classified at default
 # no other taxonomy was predicted in both covid and random fasta
+# in the metavirome data, 43% sequences had predicted genus with ES=0 but with default ES it was 1%. so ES cutoff removed significant number of seqs. 
+# in genecode 1k lncRNA, 45% sequences had predicted genus with ES=0 but with default ES it was 0.3%. so ES cutoff removed significant number of seqs. 
 
 for f in ./temp/test/*meta*fasta;
 do echo $f;
@@ -30,9 +33,35 @@ python3 v2_p.py \
    --output_csv $f.csv
 done
 
-# check acc python at 5-fold 80% vs 20%
+#### 3-fold cross validation
 
-# check with different kmers
+for k in {1..2}
+do
+	echo $k;
+	python split_fasta.py;
+
+  # Run the first Python script
+  python v2_b_10.py \
+    --meta ./temp/metadata.csv \
+    --seq ./temp/train.fasta \
+    --k 16 \
+    --saving_dir ./temp/cv_b10/;
+
+  # Run the second Python script
+  python3 v2_p.py \
+    --database_path ./temp/cv_b10/ \
+    --seq ./temp/test.fasta \
+    --output_csv ./temp/cv_b10/VirusTaxo_predictions_fold_10_"$k".csv;
+done >vt_3cv_b10.log
+
+#### build models
+python v2_b_10.py \
+  --meta ./temp/database10/metadata.csv \
+  --seq ./temp/database10/sequences.fasta \
+  --k 16 \
+  --saving_dir ./temp/database10/
+
+#### check acc at 5-fold 80% vs 20%
 
 
 #!/bin/bash
@@ -47,12 +76,12 @@ python split_fasta.py
 
 # test on local pc
 
-for k in {10..11}
+for k in {16..16}
 do
   echo "Current k-mer: $k";
   
   # Run the first Python script
-  python v2_b.py \
+  python build.py \
     --meta ../temp/metadata.csv \
     --seq ../temp/seq1k.fasta \
     --k "$k" \
@@ -61,12 +90,16 @@ do
 	echo "Predicting with k-mer = $k";
 
   # Run the second Python script
-  python3 v2_p.py \
+  python3 predict.py \
     --database_path ../temp/ \
     --seq ../temp/seq100.fasta \
-    --output_csv VirusTaxo_predictions_"$k".csv;
+    --output_csv ./temp/VirusTaxo_predictions_"$k".csv;
 done
 
+python3 v2_p.py \
+    --database_path ../temp/ \
+    --seq ../temp/seq100.fasta \
+    --output_csv VirusTaxo_predictions_16.csv;
 
 #### in server 
 cd /projects/epigenomics3/epigenomics3_results/users/rislam/CLL_hg38/VirusTaxo/
@@ -103,9 +136,9 @@ do
 done >vt_kmers_.5.05._k10-14.log
 
 
-#### 5-fold cross validation
+#### 3-fold cross validation
 
-for k in {7..10}
+for k in {1..3}
 do
 	echo $k;
 	python split_fasta.py;
@@ -121,7 +154,6 @@ do
   python3 v2_p.py \
     --database_path ./temp/cv/ \
     --seq ./temp/test.fasta \
-    --entropy 0.8 \
     --output_csv ./temp/cv/VirusTaxo_predictions_fold_"$k".csv;
 done >vt_3cv_2.log
 

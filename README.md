@@ -1,148 +1,182 @@
 ## VirusTaxo: Taxonomic classification of viruses from metagenomic contigs
 
-VirusTaxo has an average accuracy of 93% at genus level across DNA and RNA viruses.
-
 ### 1. Running VirusTaxo 
 #### Requirements 
 - python >= 3.8
 - Linux
 
 #### Installation
- - Cloning the repository
+
+ - Clone the repository
+
 ```
 git clone https://github.com/omics-lab/VirusTaxo
 ```
- - Creation of Python Virtual Environment
+
+ - Create Python Virtual Environment
+
 ```
 cd VirusTaxo
 python3 -m venv environment
 source ./environment/bin/activate
 ```
- - Installation of Python Packages
+ - Install Python Packages
+
 ```
 pip install -r requirements.txt
 ```
 
-### 2. Predict virus taxonomy from fasta file using prebuilt database
+### 2. Predict virus taxonomy using prebuilt database
 
-- Download prebuilt databse (`database.v2_2024`) of VirusTaxo
+#### Step-1: Download the [latest](https://drive.google.com/file/d/1UWwtBZSmVNeuqGE9_u6RVTt1y2U0HLM3/view?usp=sharing) prebuilt databse of VirusTaxo 
 
 ```
-gdown "https://drive.google.com/uc?id=1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs"
+gdown "https://drive.google.com/uc?id=1UWwtBZSmVNeuqGE9_u6RVTt1y2U0HLM3"
 
 # Extract db files
-tar -xvzf vt_db_jan21_2024.tar.gz
+tar -xvzf database.v3_2024.tar.gz
 ```
 
-- Database files and usage:
+-  Database files:
 
-| db file | Molecule | Usage |
+| Database file | Count | Description |
 |----------|----------|----------|
-| DNA_RNA_18451_k20.pkl  | DNA & RNA  | Recommended for samples containing both DNA & RNA viruses   |
-| DNA_9384_k21.pkl  | DNA  | Recommended for samples containing DNA viruses only |
-| RNA_9067_k17.pkl  | RNA  | Recommended for samples containing RNA viruses only |
+| Family_database.pkl  | 242 Family  | k-mer database for Family level prediction   |
+| Genus_database.pkl  | 1933 Genus  | k-mer database for Genus level prediction   |
+| Species_database.pkl  | 8528 Species  | k-mer database for Species level prediction   |
+| sequences.fasta  | 12613 genome | Complete genome sequences used to build database |
+| metadata.csv  | 12613 accession | Metadata associated with the dataset used to build database |
 
-
-- Assemble the metagenomic contigs from your metavirome or metagenomic library. 
+#### Step-2: Assemble the metagenomic contigs from your metavirome or metagenomic library 
    - Perform *de novo* assembly using [MEGAHIT](https://academic.oup.com/bioinformatics/article/31/10/1674/177884): 
 
-   ```
-   megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
-   ```
+```
+# paired-end
+megahit -1 file_R1.fq -2 file_R2.fq --min-contig-len 500 -o contig.fasta
+```
 
-- Usage of `predict.py`:
+#### Step-3: Predict taxonomy using `predict.py`
+
+- Usage
 
 ```
 python3 predict.py -h
 
-usage: predict.py [-h] --model_path MODEL_PATH --seq SEQ [--output_csv OUTPUT_CSV] [--entropy ENTROPY] [--enrichment_score ENRICHMENT_SCORE]
+usage: predict.py [-h] --database_path DATABASE_PATH --seq SEQ [--output_csv OUTPUT_CSV]
+               [--entropy ENTROPY] [--enrichment ENRICHMENT]
+               [--enrichment_spp ENRICHMENT_SPP]
 
 options:
   -h, --help            show this help message and exit
-  --model_path MODEL_PATH
-                        Absolute or relative path of pre-built model
-  --seq SEQ             Absolute or relative path of fasta sequence file
+  --database_path DATABASE_PATH
+                        Absolute or relative path containing three database files
+                        (Family_database.pkl, Genus_database.pkl and Species_database.pkl)
+  --seq SEQ             Absolute or relative path of the input fasta sequence file
   --output_csv OUTPUT_CSV
-                        Path to save the output CSV file (default: VirusTaxo_taxonomy_output.csv)
-  --entropy ENTROPY     Entropy threshold for classification (default: 0.5)
-  --enrichment_score ENRICHMENT_SCORE
-                        Enrichment score threshold for classification (default: 0.8)
+                        Path to save the output CSV file (default:
+                        VirusTaxo_predictions.csv)
+  --entropy ENTROPY     Entropy threshold; entropy range is [0-1] (default: 0.5)
+  --enrichment ENRICHMENT
+                        Enrichment score threshold for Genus and Family; enrichment range
+                        is [0-1] (default: 0.05)
+  --enrichment_spp ENRICHMENT_SPP
+                        Enrichment score threshold for Species; enrichment range is [0-1]
+                        (default: 0.8)
 ```
 
-- Run with the sample [contig.fasta](./Dataset/contig.fasta) file
+- Run with an example [fasta](./Dataset/test.fasta) file
 
 ```
 python3 predict.py \
-   --model_path /path/DNA_RNA_18451_k20.pkl \ # database file
-   --seq ./Dataset/contig.fasta # query fasta file 
-```
-
-- Example output for 4 query sequences
-
-```
-Id              Length  Genus           Entropy Enrichment_Score
-QuerySeq-1      219     Unclassified    1.000   0.000
-QuerySeq-2      720     Betacoronavirus 0.000   0.973
-QuerySeq-3      1540    Unknown         0.285   0.820
-QuerySeq-4      1330    Lentivirus      0.000   0.987
+   --database_path /PathToDatabase/ \ # database file
+   --seq test.fasta # query fasta file 
 ```
 
 ### 3. Interpretation of output
+
+- Example output 
+
+```
+Accession    Query_Seq_Length  Family           Family_Entropy  Family_Enrichment  Genus           Genus_Entropy  Genus_Enrichment  Species                   Species_Entropy  Species_Enrichment  Valid
+AC_000001.1  33034             Adenoviridae     0.0             0.786              Mastadenovirus  0.0            0.782             Ovine mastadenovirus A    0.0              0.745               Yes
+AC_000002.1  34446             Adenoviridae     0.0             0.845              Mastadenovirus  0.0            0.842             Bovine mastadenovirus B   0.0              0.811               Yes
+AC_000011.1  36519             Adenoviridae     -0.0            0.57               Mastadenovirus  -0.0           0.563             Human mastadenovirus E    -0.0             0.353               Yes
+AC_000189.1  34094             Adenoviridae     -0.0            0.81               Mastadenovirus  -0.0           0.803             Porcine mastadenovirus A  -0.0             0.742               Yes
+NC_000852.5  330611            Phycodnaviridae  -0.0            0.121              Chlorovirus     -0.0           0.115             Unclassified              -0.0             0.014               Yes
+NC_000855.1  11158             Unclassified     0.0             0.011              Unclassified    0.0            0.006             Unclassified              0.09             0.002               Yes
+NC_000867.1  10079             Unclassified     -0.0            0.018              Unclassified    -0.0           0.01              Unclassified              0.089            0.002               Yes
+NC_000899.1  45063             Adenoviridae     0.0             0.85               Aviadenovirus   0.0            0.844             Fowl aviadenovirus D      0.0              0.772               Yes
+NC_000939.2  4415              Tombusviridae    -0.0            0.061              Aureusvirus     -0.0           0.055             Aureusvirus dioscoreae    -0.0             0.053               Yes
+```
+
 - In the taxonomic rank column 
-   - `NoHit`: no k-mer overlap between the query and database.
-   - `Unknown`: genus name is not assigned in the [ICTV classification](https://ictv.global/). 
-   - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment_Score` (default <= 0.8) is outside of cutoff.
 
-- Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
+   - `Unclassified`: `Entropy` (default >= 0.5) or `Enrichment` (default <= 0.05 for Family and Genus; default <= 0.80 for Species prediction) is outside of cutoff. 
 
-- Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
+   - Lower `Entropy` (such as ≤=0.5) provides the higher level of prediction certainty. You can decrease `Entropy` cutoff for better prediction. 
 
-### 4. Build your custom database
+   - Higher `Enrichment_Score` (such as >= 0.8) provides the higher level of prediction certainty. You can increase `Enrichment_Score` cutoff for better prediction. `Enrichment_Score` is the total number of k-mers mapped to the genera divided by total number of k-mers in the query sequence.
 
-- Preparing a metadata file in `csv` format. The metadata file must contain columns named `Id`  and `Genus`. Example of metadata file is [here](./Dataset/RNA_meta.csv):
+   - The `Valid` column indicates `Yes` if the prediction aligns with known taxonomic ranks; otherwise, it shows `No`. Rarely prediction could result into exceptions to known taxonomic ranks. It is generally recommended to exclude rows marked as `No` unless you have verified the taxonomic assignment and are confident in its accuracy.
 
-- The sequnce IDs must match with the metadata IDs. Example of input fasta file is [here](./Dataset/RNA_seq.fasta).
+### 4. Prediction accurary of VirusTaxo
+To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-validation, 80% of the sequences were randomly chosen to create the database, and the other 20% were used to calculate the accuracy shown in the table below:
+
+| Taxonomic Rank               | Accuracy | Unclassified | Enrichment cutoff | Entropy cutoff | k-mer |
+|--------------------|----------|--------------|-------------------|--------------|-------------------|
+| Family             | 99.99%      | 53%          | >=0.05            | <=0.50       | 16           |
+| Genus              | 97.26%      | 57%          | >=0.05            | <=0.50       | 16           |
+| Species            | 85.32%      | 98.5%          | >=0.80            | <=0.50       | 16           |
+
+
+### 5. Build custom database
+
+- Preparing a metadata file in `csv` format. The metadata file must contain columns named `Accession`, `Family`, `Genus` and `Species`. Example of metadata file is [here](./Dataset/metadata.csv):
+
+- The sequnce `Accession` must match with the metadata `Accession`. Example of input fasta file is [here](./Dataset/RNA_seq.fasta)
+- The `metadata.csv` much with within the database directory during prediction. 
 
  - Building database:
 
 ```
 python3 build.py \
-   --meta ./Dataset/RNA_meta.csv \ # provide your metadata file
-   --seq ./Dataset/RNA_seq.fasta \ # provide your fasta file
-   --k 17 \
-   --saving_path /path/RNA.pkl
+   --meta ./Dataset/metadata.csv \ # provide your metadata file
+   --seq ./Dataset/seq1k.fasta \ # provide your fasta file
+   --k 16 \
+   --saving_path /path/
 ```
 
  - Parameters 
   
    - `meta`: Absolute or relative path of metadata file.
    - `seq`: Absolute or relative path of fasta sequence file.
-   - `k` : It denotes the length of k-mer.
-   - `saving_path`: Path to save a pickle file (A database File).
+   - `k` : The length of k-mer.
+   - `saving_path`: Path to save database pickle files for Family, Genus and Species.
 
 
-### 5. Method limitation and interpretation
+### 6. Method limitation and interpretation
 
-- VirusTaxo is trained on known virus sequences and designed to predict taxonomy of virus sequences. 
+- VirusTaxo's database is build on known virus genomes and designed to predict taxonomy of virus sequences. 
 
-- Since VirusTaxo uses k-mer enrichment, non-virus sequences could be classified as virus due to random k-mer match. To use VirusTaxo, please make sure to remove non-virus sequences.    
+- Non-viral sequences may be misclassified as viral due to random k-mer matches in VirusTaxo predictions. To minimize the likelihood of such misclassifications, it is recommended to apply a higher `Enrichment` cutoff. This helps ensure that only sequences with stronger evidence of being viral are retained. Additionally, 
 
-- If your sample contains non-virus sequences, it is highly recommeded to filter out non-viral sequences using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`. 
+  - Filter out sequences by mapping to host reference genomes before using VirusTaxo. This helps remove host-derived sequences, improving the accuracy of viral predictions and reducing potential false positives.
 
-- To avoid contaimination with host sequences, please filter out those by mapping the reads to host reference genomes before using VirusTaxo. 
+  - If your sample contains non-viral sequences, it is recommended to filter them out by using tools like [blast](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/find-data/sequence) or [DeepVirFinder](https://github.com/jessieren/DeepVirFinder) `dvf.py -i contig.fasta -o ./`. 
 
-### 6. Version history 
+### 7. Version history 
 
-| Script | Version  | Date     | Sequences | Download |
+| VirusTaxo | Database  | Data Date     | Sequences | Download |
 |----------|----------|----------|----------|----------|
+| [v2](https://github.com/omics-lab/VirusTaxo/) Family, Genus, Species prediction | database.v3_2024  | Jan21_2024  | DNA=9384 &  RNA=9067  | [here](https://drive.google.com/file/d/1UWwtBZSmVNeuqGE9_u6RVTt1y2U0HLM3/view?usp=sharing)  |
 | [v1](Script/v1) Genus prediction | database.v2_2024  | Jan21_2024  | DNA=9384 &  RNA=9067  | [here](https://drive.google.com/file/d/1gz0n5oHomWjpT0HXsrqh8hTLqmqiqgJs/view?usp=sharing)  |
 | [v1](Script/v1) Genus prediction | database.v1_2022  | Apr27_2022  | DNA=4421 &  RNA=2529  | [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing)  |
 | [Used in manuscript](https://github.com/omics-lab/VirusTaxo_Hierarchical) | database.v1_2022  | Apr27_2022  | DNA=4421 &  RNA=2529  | [here](https://drive.google.com/file/d/1j9rcFi6AMjA7tSqSizAQO7GpZw-brauZ/view?usp=sharing) |
 
-### 7. Contact
+### 8. Contact
 Rashedul Islam, PhD (rashedul.gen@gmail.com)
 
-### 8. Citation
+### 9. Citation
 
 Rajan Saha Raju, Abdullah Al Nahid, Preonath Chondrow Dev,  Rashedul Islam. [VirusTaxo: Taxonomic classification of viruses from the genome sequence using k-mer enrichment
 ](https://www.sciencedirect.com/science/article/pii/S0888754322001598). Genomics, Volume 114, Issue 4, July 2022.

@@ -133,7 +133,8 @@ To check accuracy, 12,613 complete virus genomes were used. In 5-fold cross-vali
 
 - Preparing a metadata file in `csv` format. The metadata file must contain columns named `Accession`, `Family`, `Genus` and `Species`. Example of metadata file is [here](./Dataset/metadata.csv):
 
-- The sequnce `Accession` must match with the metadata `Accession`. Example of input fasta file is [here](./Dataset/RNA_seq.fasta).
+- The sequnce `Accession` must match with the metadata `Accession`. Example of input fasta file is [here](./Dataset/RNA_seq.fasta)
+- The `metadata.csv` much with within the database directory during prediction. 
 
  - Building database:
 
