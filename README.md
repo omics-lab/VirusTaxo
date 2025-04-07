@@ -181,4 +181,7 @@ Rashedul Islam, PhD (rashedul.gen@gmail.com)
 - Rajan Saha Raju, Abdullah Al Nahid, Preonath Chondrow Dev,  Rashedul Islam. [VirusTaxo: Taxonomic classification of viruses from the genome sequence using k-mer enrichment
 ](https://www.sciencedirect.com/science/article/pii/S0888754322001598). Genomics, Volume 114, Issue 4, July 2022.
 
-- Rashedul Islam, Rajan Saha Raju, Nazia Tasnim, Istiak Hossain Shihab, Maruf Ahmed Bhuiyan, Yusha Araf, Tofazzal Islam. [Choice of assemblers has a critical impact on de novo assembly of SARS-CoV-2 genome and characterizing variants](https://academic.oup.com/bib/article/22/5/bbab102/6210065). Briefings in Bioinformatics, Volume 22, Issue 5, bbab102, September 2021.  
+- Rashedul Islam, Rajan Saha Raju, Nazia Tasnim, Istiak Hossain Shihab, Maruf Ahmed Bhuiyan, Yusha Araf, Tofazzal Islam. [Choice of assemblers has a critical impact on de novo assembly of SARS-CoV-2 genome and characterizing variants](https://academic.oup.com/bib/article/22/5/bbab102/6210065). Briefings in Bioinformatics, Volume 22, Issue 5, bbab102, September 2021. 
+
+### 10. License
+This project is licensed under the MIT license. 
